@@ -109,6 +109,40 @@ config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
 	  governor. If unsure have a look at the help section of the
 	  driver. Fallback governor will be the performance governor.
 
+config CPU_FREQ_DEFAULT_GOV_SMARTMAX
+	bool "smartmax"
+	select CPU_FREQ_GOV_SMARTMAX
+	help
+	  Use the smartmax governor as default.
+config CPU_FREQ_DEFAULT_GOV_PEGASUS
+	bool "pegasus"
+	select CPU_FREQ_GOV_PEGASUS
+	help
+	  Use the pegasus governor as default.
+
+config CPU_FREQ_DEFAULT_GOV_THUNDER
+	bool "thunder"
+	select CPU_FREQ_GOV_THUNDER
+	help
+	  Use the thunder governor as default.
+config CPU_FREQ_DEFAULT_GOV_INTERACTIVEX
+	bool "interactivex"
+	select CPU_FREQ_GOV_INTERACTIVEX
+	help
+	  Use the interactivex governor as default.
+
+config CPU_FREQ_DEFAULT_GOV_INTELLIACTIVE
+	bool "intelliact"
+	select CPU_FREQ_GOV_INTELLIACT
+	help
+	  Use the intelliactive governor as default.
+
+config CPU_FREQ_DEFAULT_GOV_INTELLIDEM
+	bool "intellidem"
+	select CPU_FREQ_GOV_INTELLIDEM
+	help
+	  Use the intellidemand governor as default.
+
 config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	bool "interactive"
 	select CPU_FREQ_GOV_INTERACTIVE
@@ -215,6 +249,41 @@ config CPU_FREQ_GOV_CONSERVATIVE
 	  For details, take a look at linux/Documentation/cpu-freq.
 
 	  If in doubt, say N.
+
+config CPU_FREQ_GOV_SMARTMAX
+	tristate "'smartmax' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	'smartmax' governor
+
+config CPU_FREQ_GOV_PEGASUS
+	tristate "'pegasus' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	'pegasus' governor
+
+config CPU_FREQ_GOV_THUNDER
+	tristate "'thunder' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	'thunder' governor
+config CPU_FREQ_GOV_INTERACTIVEX
+	tristate "'interactivex' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	'interactivex' governor
+
+config CPU_FREQ_GOV_INTELLIACT
+	tristate "'intelliact' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	'intelliact' governor
+
+config CPU_FREQ_GOV_INTELLIDEM
+	tristate "'intellidem' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	'intellidem' governor
 
 config CPU_BOOST
 	tristate "Event base short term CPU freq boost"
