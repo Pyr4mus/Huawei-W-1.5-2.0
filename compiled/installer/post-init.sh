@@ -123,14 +123,3 @@ echo $CPU_MIN > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo $CPU_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 
 echo "Post-init finished ..."
-
-#(while [ 1 ]; do
-#	SCREEN_ON=`cat /sys/power/wake_lock`	
-#	if [ $SCREEN_ON = "PowerManagerService.Display PowerManagerService.WakeLocks bluedroid_timer" ]; then
-#		echo $CPU_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-#		SCREEN_ON=
-#	else
-#		echo $CPU_MIN > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-#		SCREEN_ON=
-#	fi	
-#done &)
