@@ -12,6 +12,7 @@ set_perm(0, 0, 0777, "/tmp/busybox");
 set_perm(0, 0, 0777, "/tmp/busybox.sh");
 set_perm(0, 0, 0777, "/tmp/su.sh");
 
+ui_print(" ");
 ui_print("---------------------");
 ui_print("NEGALITE HW+ 1.50-2.0");
 ui_print("---------------------");

@@ -138,7 +138,7 @@ function compile(){
 		echo " "
 		
 		cd $INITRAMFS
-		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F pm_levels.sleep_disabled=1 console=null androidboot.console=null'
+		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F pm_levels.sleep_disabled=1 console=null androidboot.console=null zcache'
 
 		$MKBOOT/mkbootfs ramdisk | gzip > ramdisk.gz
 		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot.img
