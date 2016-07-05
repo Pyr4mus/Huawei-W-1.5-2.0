@@ -81,6 +81,7 @@ on post-fs-data
     write /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor 4
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1190400
+    write /sys/class/graphics/fb0/mdss_fb_delta_pixel 1
 
     setprop vold.post_fs_data_done 1
 
@@ -144,6 +145,7 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 787200
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    write /sys/module/drv2605/parameters/vibrator_volt 130
 
 on property:sys.cw_home_ready=1
     write /sys/devices/system/cpu/cpu1/online 0
@@ -248,5 +250,17 @@ service sensorhd /system/bin/shd
     socket shdctl stream 0666 root root
     socket shddata stream 0666 root root
     user  root
+    group root
+    oneshot
+    
+service post-init /system/etc/post-init.sh
+    class late_start
+    user root
+    group root
+    oneshot
+    
+service perf-boot /system/etc/perf-boot.sh
+    class late_start
+    user root
     group root
     oneshot
