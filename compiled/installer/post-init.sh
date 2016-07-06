@@ -37,13 +37,19 @@ VIB_VOLT="130"
 # Scheduler
 SCHEDULER="cfq" # [noop deadline row cfq vr sio zen fifo fiops]
 
-# Intelli-Plug
-INTELLI_PLUG="Off" #choices: [On, Off]
-INTELLI_RUN_THRESH="350"
-INTELLI_HYSTERESIS="6"
-INTELLI_CORES="4"
-INTELLI_PROFILE="3" # [0=balanced 1=performance 2=conservative 3=eco-performance 4=eco-conservative]
-INTELLI_TOUCH_BOOST="0"
+# MSM_HOTPLUG
+MSMH_PLUG="On" #choices: [On, Off]
+$MSMH_DEBUG_MASK="1"
+$MSMH_BOOST_LOCK_DURATION="4000"
+$MSMH_CPUS_BOOSTED="4"
+$MSMH_DOWN_LOCK_DURATION="1000"
+$MSMH_FAST_LANE_LOAD="100"
+$MSMH_HISTORY_SIZE="25"
+MSMH_IO_IS_BUSY="1"
+$MSMH_MAX_CPUS_ONLINE="3" 
+$MSMH_MIN_CPUS_ONLINE="1" 
+$MSMH_OFFLINE_LOAD="0"
+$MSMH_UPDATE_RATES="25"
 
 #####################################################################################################
 #                                     END CONFIGURABLE SETTINGS                                     #
@@ -58,16 +64,18 @@ else
 	echo "0" > /sys/fs/selinux/enforce
 fi
 
-# Intelli-Plug
-if [ $INTELLI_PLUG = "On" ]; then
-	echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
-	echo $INTELLI_RUN_THRESH > /sys/module/intelli_plug/parameters/cpu_nr_run_threshold
-	echo $INTELLI_HYSTERESIS > /sys/module/intelli_plug/parameters/nr_run_hysteresis
-	echo $INTELLI_CORES > /sys/module/intelli_plug/parameters/nr_possible_cores
-	echo $INTELLI_PROFILE > /sys/module/intelli_plug/parameters/nr_run_profile_sel
-	echo $INTELLI_TOUCH_BOOST > /sys/module/intelli_plug/parameters/touch_boost_active
-else	
-	echo "0" > /sys/module/intelli_plug/parameters/eco_mode_active
+# MSM_HOTPLUG
+if [ $MSMH_PLUG = "On" ]; then
+	echo $MSMH_DEBUG_MASK > /sys/module/msm_hotplug/parameters/debug_mask
+	echo $MSMH_CPUS_BOOSTED > /sys/module/msm_hotplug/cpus_boosted
+	echo $MSMH_DOWN_LOCK_DURATION > /sys/module/msm_hotplug/down_lock_duration
+	echo $MSMH_FAST_LANE_LOAD > /sys/module/msm_hotplug/fast_lane_load
+	echo $MSMH_HISTORY_SIZE > /sys/module/msm_hotplug/history_size
+	echo $MSMH_IO_IS_BUSY > /sys/module/msm_hotplug/io_is_busy
+	echo $MSMH_MAX_CPUS_ONLINE > /sys/module/msm_hotplug/max_cpus_online
+	echo $MSMH_MIN_CPUS_ONLINE > /sys/module/msm_hotplug/min_cpus_online
+	echo $MSMH_OFFLINE_LOAD > /sys/module/msm_hotplug/offline_load
+	echo $MSMH_UPDATE_RATES > /sys/module/msm_hotplug/update_rates
 fi
 
 echo $SCHEDULER > /sys/block/stl10/queue/scheduler
