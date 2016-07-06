@@ -1407,6 +1407,8 @@ config PERFMAP
 endmenu
 
 source "arch/arm/common/Kconfig"
+source "arch/arm/hotplug/MSMHOTPLUG/Kconfig"
+source "arch/arm/hotplug/ZENDECISION/Kconfig"
 
 menu "Bus support"
 
