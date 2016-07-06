@@ -4,6 +4,7 @@ REVISION="$(git log --pretty=format:'%h' -n 1)"
 
 CURDATE=`date "+%m-%d-%Y"`
 VERSION="-Negalite-HW-$REVISION"
+ANDROID_VERSION="1.5"
 
 PARENT=`readlink -f .`
 INITRAMFS=$PARENT/compiled
@@ -140,7 +141,7 @@ function compile(){
 		cd $INITRAMFS
 		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F pm_levels.sleep_disabled=1 console=null androidboot.console=null zcache'
 
-		$MKBOOT/mkbootfs ramdisk | gzip > ramdisk.gz
+		$MKBOOT/mkbootfs ramdisk-$ANDROID_VERSION | gzip > ramdisk.gz
 		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot.img
 		mv boot.img ./installer/kernel/boot.img
 		
@@ -156,13 +157,13 @@ function compile(){
 
 		zip -9 -r bootperf perf-boot.sh post-init.sh
 		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 build.prop bootperf.zip
-		mv $INSTALLER/negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION.zip
+		mv $INSTALLER/negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-$ANDROID_VERSION.zip
 		
 		echo " "
 		echo "**************************************************************"
 		echo "**************************************************************"
 		echo "              Compile finished Successfully!!!                "
-		echo " Package 'negalite_kernel_HW_$REVISION.zip' Is Located In The 'compiled' Folder "
+		echo " Package 'negalite_kernel_HW_$REVISION-$ANDROID_VERSION.zip' Is Located In The 'compiled' Folder "
 		echo "**************************************************************"
 		echo "**************************************************************"
 		echo " "
