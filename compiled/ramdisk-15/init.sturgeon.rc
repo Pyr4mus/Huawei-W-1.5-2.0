@@ -1,0 +1,266 @@
+# Copyright (c) 2009-2012, 2014, The Linux Foundation. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of The Linux Foundation nor
+#       the names of its contributors may be used to endorse or promote
+#       products derived from this software without specific prior written
+#       permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+import init.sturgeon.usb.rc
+import init.huawei.logserver.rc
+import init.sturgeon.batterystats.rc
+
+on init
+    mkdir /nvdata 0771 system system
+    mkdir /firmware 0771 system system
+    mkdir /oem 0771 system system
+
+    # Support legacy paths
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
+
+on fs
+    mount_all fstab.sturgeon
+
+    wait /dev/block/platform/msm_sdcc.1/by-name/nvdata
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/nvdata /nvdata nosuid nodev barrier=1
+    restorecon_recursive /nvdata
+
+    wait /dev/block/platform/msm_sdcc.1/by-name/oem
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/oem /oem ro nosuid nodev context=u:object_r:oemfs:s0
+
+# msm specific files that need to be created on /data
+on post-fs-data
+    # Load ADSP firmware
+    write /sys/kernel/boot_adsp/boot 1
+
+    # Set wifi mac address
+    copy /nvdata/MACWLAN /proc/wifi/mac
+
+    #Create the directory used by save mcu dump log
+    mkdir /data/mcudumplog 0775 system system
+
+    # CPU frequency, suspend and governor
+    write /sys/module/lpm_levels/enable_low_power/l2 4
+    write /sys/module/lpm_levels/system/cpu0/pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu0/standalone_pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/standalone_pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/standalone_pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/standalone_pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu0/standalone_pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/standalone_pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/standalone_pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/standalone_pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu0/pc/idle_enabled 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "ondemand"
+    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 50000
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 90
+    write /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy 1
+    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor 4
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1190400
+    write /sys/class/graphics/fb0/mdss_fb_delta_pixel 1
+
+    setprop vold.post_fs_data_done 1
+
+on early-boot
+    # set RLIMIT_MEMLOCK to 64MB
+    setrlimit 8 67108864 67108864
+    # Allow subsystem (modem etc) debugging
+    write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
+    # Allow mdss CX rail to go down to vddmin, during the system
+    # in idle mode for reduce the ambient mode power cost.
+    write /sys/kernel/debug/mdp/allow_cx_vddmin 1
+
+on boot
+    chown system system /sys/kernel/debug/kgsl/proc
+
+    setprop ro.radio.noril yes
+
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chmod 0600 /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chmod 0600 /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
+    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
+    chown system system /sys/module/sco/parameters/disable_esco
+    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
+    chmod 0660 /sys/module/bluetooth_power/parameters/power
+    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
+    chmod 0660 /proc/bluetooth/sleep/proto
+    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
+    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+    chown bluetooth bluetooth /proc/bluetooth/sleep/btwrite
+    chown bluetooth bluetooth /proc/bluetooth/sleep/lpm
+
+    #Remove SUID bit for iproute2 ip tool
+    chmod 0755 /system/bin/ip
+
+    # To prevent out of order acknowledgements from making
+    # connection tracking to treat them as not belonging to
+    # the connection they belong to.
+    # Otherwise, a weird issue happens in which some long
+    # connections on high-throughput links get dropped when
+    # an ack packet comes out of order
+    write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
+
+    # Set the console loglevel to < KERN_INFO
+    # Set the default message loglevel to KERN_INFO
+    write /proc/sys/kernel/printk "6 6 1 7"
+
+    # disable network time update
+    setprop config.disable_networktime true
+
+    # Set the fix freq to 200MHz for KGSL
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 200000000
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 200000000
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor performance
+
+on property:sys.boot_completed=1
+    write /sys/devices/system/cpu/cpu2/online 0
+    write /sys/devices/system/cpu/cpu3/online 0
+    # Use userspace governor to set min=max=787MHz
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 787200
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    write /sys/module/drv2605/parameters/vibrator_volt 130
+
+on property:sys.cw_home_ready=1
+    write /sys/devices/system/cpu/cpu1/online 0
+
+on property:sys.thermal_cpu_freq_level=1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 787200
+
+on property:sys.thermal_cpu_freq_level=2
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 300000
+
+# run Huawei retail mode, we need block key event
+# beacuse the key event will casue retail app exit
+on property:persist.sys.key_block=true
+    write /sys/kernel/key_block/key_block_value 1
+
+on property:persist.sys.key_block=false
+    write /sys/kernel/key_block/key_block_value 0
+
+on property:ro.debuggable=1
+    mkdir /data/tombstones 0771 system system
+    symlink /data/tombstones /tombstones
+    restorecon_recursive /data/tombstones
+
+on property:init.svc.wpa_supplicant=stopped
+    stop dhcpcd
+
+service bt_addr_format /system/bin/bt_addr_format.sh
+    class main
+    user bluetooth
+    group net_bt_stack
+    oneshot
+
+service delta_panel /system/bin/delta_panel.sh
+    class main
+    user root
+    group root
+    oneshot
+
+# Format the following partitions if they don't have a filesystem
+service setup_fs /system/bin/setup_fs \
+   /dev/block/platform/msm_sdcc.1/by-name/userdata  \
+   /dev/block/platform/msm_sdcc.1/by-name/cache
+   class core
+   user root
+   group root
+   oneshot
+
+service wpa_supplicant /system/bin/wpa_supplicant \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
+    -I/system/etc/wifi/wpa_supplicant_overlay.conf \
+    -O/data/misc/wifi/sockets \
+    -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
+    #   we will start as root and wpa_supplicant will switch to user wifi
+    #   after setting up the capabilities required for WEXT
+    #   user wifi
+    #   group wifi inet keystore
+    class main
+    socket wpa_wlan0 dgram 660 wifi wifi
+    disabled
+    oneshot
+
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
+    class late_start
+    disabled
+    oneshot
+
+service iprenew_wlan0 /system/bin/dhcpcd -n
+    class late_start
+    disabled
+    oneshot
+
+service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
+    class late_start
+    disabled
+    oneshot
+
+service iprenew_bt-pan /system/bin/dhcpcd -n
+    class late_start
+    disabled
+    oneshot
+
+# Allow usb charging to be disabled persistently
+on property:persist.usb.chgdisabled=1
+   write /sys/class/power_supply/battery/charging_enabled 0
+
+on property:persist.usb.chgdisabled=0
+   write /sys/class/power_supply/battery/charging_enabled 1
+
+service clockwork_proxy /system/bin/ClockworkProxy
+    class main
+
+service bugreport /system/bin/dumpstate -d -p -B \
+        -o /data/data/com.android.shell/files/bugreports/bugreport
+    class main
+    disabled
+    oneshot
+
+service sensorhd /system/bin/shd
+    class main
+    socket shdctl stream 0666 root root
+    socket shddata stream 0666 root root
+    user  root
+    group root
+    oneshot
+    
+service post-init /system/etc/post-init.sh
+    class main
+    user root
+    group root
+    oneshot
+    
+service perf-boot /system/etc/perf-boot.sh
+    class main
+    user root
+    group root
+    oneshot

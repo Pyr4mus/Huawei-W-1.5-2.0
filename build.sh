@@ -4,7 +4,6 @@ REVISION="$(git log --pretty=format:'%h' -n 1)"
 
 CURDATE=`date "+%m-%d-%Y"`
 VERSION="-Negalite-HW-$REVISION"
-ANDROID_VERSION="1.5"
 
 PARENT=`readlink -f .`
 INITRAMFS=$PARENT/compiled
@@ -29,17 +28,25 @@ if [ -e $INITRAMFS/zImage-dtb ]; then
 	echo "  CLEAN   zImage-dtb"
 	rm $INITRAMFS/zImage-dtb
 fi
-if [ -e $INITRAMFS/*.zip ]; then
-	echo "  CLEAN   kernel.zip"
-	rm $INITRAMFS/*.zip
+if [ -e $INITRAMFS/*-1.5.zip ]; then
+	echo "  CLEAN   kernel-1.5.zip"
+	rm $INITRAMFS/*-1.5.zip
+fi;
+if [ -e $INITRAMFS/*-2.0.zip ]; then
+	echo "  CLEAN   kernel-2.0.zip"
+	rm $INITRAMFS/*-2.0.zip
 fi;
 if [ -e $INITRAMFS/installer/kernel/boot.img ]; then
 	echo "  CLEAN   boot.img"
 	rm $INITRAMFS/installer/kernel/boot.img
 fi;
-if [ -e $INITRAMFS/ramdisk.gz ]; then
-	echo "  CLEAN   ramdisk.gz"
-	rm $INITRAMFS/ramdisk.gz
+if [ -e $INITRAMFS/*-15.gz ]; then
+	echo "  CLEAN   ramdisk-15.gz"
+	rm $INITRAMFS/*-15.gz
+fi;
+if [ -e $INITRAMFS/*-20.gz ]; then
+	echo "  CLEAN   ramdisk-20.gz"
+	rm $INITRAMFS/*-20.gz
 fi;
 if [ -e $INITRAMFS/apq8026-sturgeon.dtb ]; then
 	echo "  CLEAN   apq8026-sturgeon.dtb"
@@ -133,7 +140,7 @@ function compile(){
 		echo " "
 		echo "**************************************************************"
 		echo "**************************************************************"
-		echo "                Packing zImage into boot.img                  "
+		echo "                Packing zImage-dtb into boot.img                  "
 		echo "**************************************************************"
 		echo "**************************************************************"
 		echo " "
@@ -141,9 +148,11 @@ function compile(){
 		cd $INITRAMFS
 		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F pm_levels.sleep_disabled=1 console=null androidboot.console=null zcache'
 
-		$MKBOOT/mkbootfs ramdisk-$ANDROID_VERSION | gzip > ramdisk.gz
-		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot.img
-		mv boot.img ./installer/kernel/boot.img
+		$MKBOOT/mkbootfs ramdisk-15 | gzip > ramdisk-15.gz
+		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk-15.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot-15.img
+		
+		$MKBOOT/mkbootfs ramdisk-20 | gzip > ramdisk-20.gz
+		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk-20.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot-20.img
 		
 		echo " "
 		echo "**************************************************************"
@@ -156,14 +165,20 @@ function compile(){
 		cd $INSTALLER
 
 		zip -9 -r bootperf perf-boot.sh post-init.sh
-		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 build.prop bootperf.zip
-		mv $INSTALLER/negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-$ANDROID_VERSION.zip
 		
+		mv $INITRAMFS/boot-15.img kernel/boot.img		
+		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 build.prop bootperf.zip
+		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-1.5.zip
+		
+		mv $INITRAMFS/boot-20.img kernel/boot.img
+		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 build.prop bootperf.zip
+		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-2.0.zip
+	
 		echo " "
 		echo "**************************************************************"
 		echo "**************************************************************"
 		echo "              Compile finished Successfully!!!                "
-		echo " Package 'negalite_kernel_HW_$REVISION-$ANDROID_VERSION.zip' Is Located In The 'compiled' Folder "
+		echo " Both 'negalite_kernel_HW_$REVISION.zip(s)' Are Located In The 'compiled' Folder "
 		echo "**************************************************************"
 		echo "**************************************************************"
 		echo " "
