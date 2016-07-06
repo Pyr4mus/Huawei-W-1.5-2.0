@@ -16,7 +16,7 @@ CPU_MIN="300000" # [300000 384000 600000 787200 998400 1094400 1190400]
 CPU_ONLINE="1" #(1=All Cores Enabled)
 
 # CPU Governor
-CPU_GOV="userspace" # [intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
+CPU_GOV="smartmax" # [intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
 
 # Ondemand Settings(if chosen)
 OND_SAMP_RATE="20000"
@@ -35,21 +35,21 @@ GPU_GOV="performance" # [cpufreq userspace powersave performance simple_ondemand
 VIB_VOLT="130"
 
 # Scheduler
-SCHEDULER="cfq" # [noop deadline row cfq vr sio zen fifo fiops]
+SCHEDULER="vr" # [noop deadline row cfq vr sio zen fifo fiops]
 
 # MSM_HOTPLUG
 MSMH_PLUG="On" #choices: [On, Off]
 $MSMH_DEBUG_MASK="1"
-$MSMH_BOOST_LOCK_DURATION="4000"
+$MSMH_MIN_CPUS_ONLINE="1"
+$MSMH_MAX_CPUS_ONLINE="2"
 $MSMH_CPUS_BOOSTED="4"
-$MSMH_DOWN_LOCK_DURATION="1000"
-$MSMH_FAST_LANE_LOAD="100"
-$MSMH_HISTORY_SIZE="25"
-MSMH_IO_IS_BUSY="1"
-$MSMH_MAX_CPUS_ONLINE="3" 
-$MSMH_MIN_CPUS_ONLINE="1" 
+$MSMH_HISTORY_SIZE="20"
+$MSMH_UPDATE_RATES="30"
+$MSMH_DOWN_LOCK_DURATION="20"
+$MSMH_BOOST_LOCK_DURATION="1000"
+$MSMH_FAST_LANE_LOAD="200"
 $MSMH_OFFLINE_LOAD="0"
-$MSMH_UPDATE_RATES="25"
+MSMH_IO_IS_BUSY="1"
 
 #####################################################################################################
 #                                     END CONFIGURABLE SETTINGS                                     #
