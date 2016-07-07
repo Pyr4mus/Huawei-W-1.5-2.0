@@ -12,9 +12,10 @@ obj-$(CONFIG_CPU_FREQ_GOV_CONSERVATIVE)	+= cpufreq_conservative.o
 obj-$(CONFIG_CPU_FREQ_GOV_SMARTMAX) 	+= cpufreq_smartmax.o
 obj-$(CONFIG_CPU_FREQ_GOV_PEGASUS)      += cpufreq_pegasusq.o
 obj-$(CONFIG_CPU_FREQ_GOV_THUNDER)	+= cpufreq_thunderx.o
-obj-$(CONFIG_CPU_FREQ_GOV_INTERACTIVEX) 	+= cpufreq_interactiveX.o
+obj-$(CONFIG_CPU_FREQ_GOV_INTERACTIVEX) += cpufreq_interactiveX.o
 obj-$(CONFIG_CPU_FREQ_GOV_INTELLIACT)	+= cpufreq_intelliactive.o
 obj-$(CONFIG_CPU_FREQ_GOV_INTELLIDEM)	+= cpufreq_intellidemand.o
+obj-$(CONFIG_CPU_FREQ_GOV_DARKNESS)     += cpufreq_darkness.o
 obj-$(CONFIG_CPU_FREQ_GOV_INTERACTIVE)	+= cpufreq_interactive.o
 ifdef CONFIG_SCHED_FREQ_INPUT
 obj-$(CONFIG_CPU_FREQ_GOV_INTERACTIVE)	+= cpufreq_interactive_pro.o

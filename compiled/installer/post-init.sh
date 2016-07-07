@@ -16,7 +16,7 @@ CPU_MIN="300000" # [300000 384000 600000 787200 998400 1094400 1190400]
 CPU_ONLINE="1" #(1=All Cores Enabled)
 
 # CPU Governor
-CPU_GOV="smartmax" # [intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
+CPU_GOV="smartmax" # [darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
 
 # Ondemand Settings(if chosen)
 OND_SAMP_RATE="20000"
