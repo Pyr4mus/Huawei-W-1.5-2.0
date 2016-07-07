@@ -254,13 +254,13 @@ service sensorhd /system/bin/shd
     oneshot
     
 service post-init /system/etc/post-init.sh
-    class main
+    class late_start
     user root
     group root
     oneshot
     
 service perf-boot /system/etc/perf-boot.sh
-    class main
+    class late_start
     user root
     group root
     oneshot
