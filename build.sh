@@ -80,7 +80,9 @@ export PATH=$PARENT/ccache:$PARENT/toolchain-4.9.4/bin:$PATH
 export CROSS_COMPILE=arm-cortex_a7-linux-gnueabihf-
 export ARCH=arm
 
+#make sturgeon_stock_defconfig
 make sturgeon_defconfig
+
 echo " "
 echo "**************************************************************"
 echo "**************************************************************"
