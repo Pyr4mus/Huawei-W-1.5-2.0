@@ -4,16 +4,16 @@ REVISION="$(git log --pretty=format:'%h' -n 1)"
 PARENT=`readlink -f .`
 INITRAMFS=$PARENT/compiled
 
-if [ -e $INITRAMFS/negalite_kernel_HW_$REVISION-1.5.zip ]; then
+if [ -e $INITRAMFS/negalite_kernel_HW_$REVISION-2.0.zip ]; then
 	echo " "
 	echo "**************************************************************"
 	echo "**************************************************************"
-	echo "      Pushing negalite_kernel_HW_$REVISION-1.5.zip To Watch      "
+	echo "      Pushing negalite_kernel_HW_$REVISION-2.0.zip To Watch      "
 	echo "**************************************************************"
 	echo "**************************************************************"
 	echo " "
 
-	adb push $INITRAMFS/negalite_kernel_HW_$REVISION-1.5.zip /sdcard/
+	adb push $INITRAMFS/negalite_kernel_HW_$REVISION-2.0.zip /sdcard/
 	
 	# Delete bootperf.zip Option
 	echo " "

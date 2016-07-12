@@ -2,7 +2,6 @@ set_progress(0.0);
 
 package_extract_dir("setup", "/tmp");
 package_extract_file("bootperf.zip", "/tmp/bootperf.zip");
-package_extract_file("build.prop", "/tmp/build.prop");
 
 set_perm(0, 0, 0777, "/tmp/dd");
 set_perm(0, 0, 0777, "/tmp/reboot.sh");
@@ -48,7 +47,7 @@ set_progress(0.300);
 run_program("/sbin/sleep", "1");
 
 ui_print(" ");
-ui_print("Adding Build Prop");
+ui_print("Adding Build Props");
 run_program("/tmp/props.sh");
 ui_print("Done");
 set_progress(0.450);

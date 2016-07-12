@@ -445,7 +445,6 @@ on post-fs-data
     init_user0
 
     # Reload policy from /data/security if present.
-    setprop selinux.reload_policy 1
 
     # Set SELinux security contexts on upgrade or policy update.
     restorecon_recursive /data
