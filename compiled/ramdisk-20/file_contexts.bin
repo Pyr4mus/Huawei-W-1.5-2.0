@@ -59,6 +59,7 @@
 /data/resource-cache(/.*)? u:object_r:resourcecache_data_file:s0
 /data/dalvik-cache(/.*)? u:object_r:dalvikcache_data_file:s0
 /data/ota(/.*)? u:object_r:ota_data_file:s0
+/data/ota_package(/.*)? u:object_r:ota_package_file:s0
 /data/adb(/.*)? u:object_r:adb_data_file:s0
 /data/anr(/.*)? u:object_r:anr_data_file:s0
 /data/app(/.*)? u:object_r:apk_data_file:s0
@@ -73,6 +74,7 @@
 /data/mediadrm(/.*)? u:object_r:media_data_file:s0
 /data/nativetest(/.*)? u:object_r:nativetest_data_file:s0
 /data/property(/.*)? u:object_r:property_data_file:s0
+/data/preloads(/.*)? u:object_r:preloads_data_file:s0
 /data/misc/adb(/.*)? u:object_r:adb_keys_file:s0
 /data/misc/audio(/.*)? u:object_r:audio_data_file:s0
 /data/misc/audioserver(/.*)? u:object_r:audioserver_data_file:s0
@@ -108,6 +110,7 @@
 /data/misc/profiles/cur(/.*)? u:object_r:user_profile_data_file:s0
 /data/misc/profiles/cur/[0-9]+/foreign-dex(/.*)? u:object_r:user_profile_foreign_dex_data_file:s0
 /data/misc/profiles/ref(/.*)? u:object_r:user_profile_data_file:s0
+/data/misc/profman(/.*)? u:object_r:profman_dump_data_file:s0
 /data/system/users/[0-9]+/fpdata(/.*)? u:object_r:fingerprintd_data_file:s0
 /data/bootchart(/.*)? u:object_r:bootchart_data_file:s0
 /mnt/expand(/.*)? u:object_r:mnt_expand_file:s0
@@ -132,6 +135,10 @@
 /cache/recovery(/.*)? u:object_r:cache_recovery_file:s0
 /cache/backup_stage(/.*)? u:object_r:cache_backup_file:s0
 /cache/backup(/.*)? u:object_r:cache_private_backup_file:s0
+/data/cache(/.*)? u:object_r:cache_file:s0
+/data/cache/recovery(/.*)? u:object_r:cache_recovery_file:s0
+/data/cache/backup_stage(/.*)? u:object_r:cache_backup_file:s0
+/data/cache/backup(/.*)? u:object_r:cache_private_backup_file:s0
 /sys/devices/system/cpu(/.*)? u:object_r:sysfs_devices_system_cpu:s0
 /sys/devices/virtual/block/zram\d+(/.*)? u:object_r:sysfs_zram:s0
 /sys/devices/virtual/block/zram\d+/uevent u:object_r:sysfs_zram_uevent:s0
@@ -162,6 +169,7 @@
 /data/misc/raft(/.*)? u:object_r:raft_data_file:s0
 /data/mcudumplog(/.*)? u:object_r:mcudumplog_data_file:s0
 /dev/socket/perfd(/.*)? u:object_r:mpctl_socket:s0
+/data/system/time(/.*)? u:object_r:system_time_data_file:s0
 /sys/devices/soc0(/.*)? u:object_r:sysfs_socinfo:s0
 /sys/class/thermal(/.*)? u:object_r:sysfs_thermal:s0
 /sys/bus/msm_subsys(/.*)? u:object_r:sysfs_ssr:s0

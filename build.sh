@@ -169,13 +169,13 @@ function compile(){
 		zip -9 -r bootperf perf-boot.sh post-init.sh
 		
 		mv $INITRAMFS/boot-15.img kernel/boot.img		
-		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 build.prop bootperf.zip
+		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 bootperf.zip
 		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-1.5.zip
 		
 		rm kernel/boot.img
 		
 		mv $INITRAMFS/boot-20.img kernel/boot.img
-		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 build.prop bootperf.zip
+		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 bootperf.zip
 		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-2.0.zip
 	
 		echo " "

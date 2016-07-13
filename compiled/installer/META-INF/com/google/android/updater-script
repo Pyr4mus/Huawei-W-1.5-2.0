@@ -33,10 +33,9 @@ ui_print(" ");
 ui_print("Installing Negalite HW Kernel");
 package_extract_dir("kernel", "/tmp");
 set_perm(0, 0, 0777, "/tmp/boot.img");
-set_progress(0.250);
 run_program("/tmp/dd", "if=/tmp/boot.img", "of=/dev/block/mmcblk0p21");
 ui_print("Done");
-set_progress(0.150);
+set_progress(0.250);
 run_program("/sbin/sleep", "1");
 
 ui_print(" ");
@@ -72,6 +71,7 @@ set_perm(0, 0, 0755, "/system/etc/perf-boot.sh");
 set_perm(0, 0, 0755, "/system/etc/init.d/S01turbozram");
 set_perm(0, 0, 0755, "/system/build.prop");
 set_perm(0, 0, 0755, "/system/xbin/busybox");
+set_perm(0, 0, 0755, "/data/su.img");
 
 ui_print(" ");
 ui_print("Installing Kernel Aduitor 4 Wear App");
@@ -84,12 +84,12 @@ run_program("/sbin/sleep", "1");
 # Cleanup
 ###############################
 
-ui_print(" ");
-ui_print("Clearing Cache");
-delete_recursive("/cache");
-ui_print("Done");
-set_progress(0.935);
-run_program("/sbin/sleep", "1");
+#ui_print(" ");
+#ui_print("Clearing Cache");
+#delete_recursive("/cache");
+#ui_print("Done");
+#set_progress(0.935);
+#run_program("/sbin/sleep", "1");
 
 ui_print(" ");
 ui_print("Clearing Dalvik-Cache");

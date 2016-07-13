@@ -377,6 +377,7 @@ on post-fs-data
     mkdir /data/misc/profiles 0771 system system
     mkdir /data/misc/profiles/cur 0771 system system
     mkdir /data/misc/profiles/ref 0771 system system
+    mkdir /data/misc/profman 0770 system shell
 
     # For security reasons, /data/local/tmp should always be empty.
     # Do not place files or directories in /data/local/tmp
@@ -394,6 +395,10 @@ on post-fs-data
     mkdir /data/dalvik-cache 0771 root root
     # create the A/B OTA directory, so as to enforce our permissions
     mkdir /data/ota 0771 root root
+
+    # create the OTA package directory. It will be accessed by GmsCore (cache
+    # group), update_engine and update_verifier.
+    mkdir /data/ota_package 0770 system cache
 
     # create resource-cache and double-check the perms
     mkdir /data/resource-cache 0771 system system
@@ -445,6 +450,7 @@ on post-fs-data
     init_user0
 
     # Reload policy from /data/security if present.
+    setprop selinux.reload_policy 1
 
     # Set SELinux security contexts on upgrade or policy update.
     restorecon_recursive /data
@@ -601,6 +607,11 @@ on property:sys.sysctl.extra_free_kbytes=*
 on property:sys.sysctl.tcp_def_init_rwnd=*
     write /proc/sys/net/ipv4/tcp_default_init_rwnd ${sys.sysctl.tcp_def_init_rwnd}
 
+on property:security.perf_harden=0
+    write /proc/sys/kernel/perf_event_paranoid 1
+
+on property:security.perf_harden=1
+    write /proc/sys/kernel/perf_event_paranoid 3
 
 ## Daemon processes to be run by init.
 ##
@@ -632,3 +643,17 @@ on property:ro.debuggable=1
 service flash_recovery /system/bin/install-recovery.sh
     class main
     oneshot
+
+# mount /data/su.img to /su
+on property:sukernel.mount=1
+    mount ext4 loop@/data/su.img /su noatime
+
+# launch SuperSU daemon
+service daemonsu /sbin/launch_daemonsu.sh
+    class late_start
+    user root
+    seclabel u:r:init:s0
+    oneshot
+
+# SuperSU:PATCH:274
+# SuperSU:STOCK:863a68c32e68a732db364600cbf84d61e693eff3

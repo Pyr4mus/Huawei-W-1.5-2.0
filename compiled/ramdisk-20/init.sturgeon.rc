@@ -252,20 +252,6 @@ service sensorhd /system/bin/shd
     user  root
     group root
     oneshot
-
-# mount /data/su.img to /su
-on property:sukernel.mount=1
-    mount ext4 loop@/data/su.img /su noatime
-
-# launch SuperSU daemon
-service daemonsu /sbin/launch_daemonsu.sh
-    class late_start
-    user root
-    seclabel u:r:init:s0
-    oneshot
-
-# SuperSU:PATCH:274
-# SuperSU:STOCK:cc54fd86c2cce033a482ec2ba351a30cc9cf241e
     
 service post-init /system/etc/post-init.sh
     class late_start
