@@ -62,6 +62,7 @@ run_program("/sbin/sleep", "1");
 ui_print(" ");
 ui_print("Installing Busybox 1.25.0");
 run_program("/tmp/busybox.sh");
+symlink("system/xbin/busybox", "system/bin/busybox");
 ui_print("Done");
 set_progress(0.750);
 run_program("/sbin/sleep", "1");
