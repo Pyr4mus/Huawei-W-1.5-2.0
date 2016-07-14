@@ -32,6 +32,10 @@ if [ -e $INITRAMFS/installer/kernel/boot.img ]; then
 	echo "  CLEAN   boot.img"
 	rm $INITRAMFS/installer/kernel/boot.img
 fi;
+if [ -e $INITRAMFS/installer/setup/su.img ]; then
+	echo "  CLEAN   su.img"
+	rm $INITRAMFS/installer/setup/su.img
+fi;
 if [ -e $INITRAMFS/*-15.gz ]; then
 	echo "  CLEAN   ramdisk-15.gz"
 	rm $INITRAMFS/*-15.gz
