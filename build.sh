@@ -36,13 +36,13 @@ if [ -e $INITRAMFS/*-2.0.zip ]; then
 	echo "  CLEAN   kernel-2.0.zip"
 	rm $INITRAMFS/*-2.0.zip
 fi;
-if [ -e $INITRAMFS/installer/kernel/boot.img ]; then
+if [ -e $INSTALLER/kernel/boot.img ]; then
 	echo "  CLEAN   boot.img"
-	rm $INITRAMFS/installer/kernel/boot.img
+	rm $INSTALLER/kernel/boot.img
 fi;
-if [ -e $INITRAMFS/installer/setup/su.img ]; then
+if [ -e $INSTALLER/setup/su.img ]; then
 	echo "  CLEAN   su.img"
-	rm $INITRAMFS/installer/setup/su.img
+	rm $INSTALLER/setup/su.img
 fi;
 if [ -e $INITRAMFS/*-15.gz ]; then
 	echo "  CLEAN   ramdisk-15.gz"
@@ -52,13 +52,9 @@ if [ -e $INITRAMFS/*-20.gz ]; then
 	echo "  CLEAN   ramdisk-20.gz"
 	rm $INITRAMFS/*-20.gz
 fi;
-if [ -e $INITRAMFS/apq8026-sturgeon.dtb ]; then
-	echo "  CLEAN   apq8026-sturgeon.dtb"
-	rm $INITRAMFS/apq8026-sturgeon.dtb
-fi
-if [ -e $INITRAMFS/installer/bootperf.zip ]; then
+if [ -e $INSTALLER/bootperf.zip ]; then
 	echo "  CLEAN   bootperf.zip"
-	rm $INITRAMFS/installer/bootperf.zip
+	rm $INSTALLER/bootperf.zip
 fi;
 
 echo " "
@@ -154,9 +150,13 @@ function compile(){
 		cd $INITRAMFS
 		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F pm_levels.sleep_disabled=1 console=null androidboot.console=null zcache'
 
+		echo "  MKBOOT   ramdisk-15"
 		$MKBOOT/mkbootfs ramdisk-15 | gzip > ramdisk-15.gz
 		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk-15.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot-15.img
 		
+		echo " "
+		
+		echo "  MKBOOT   ramdisk-20"
 		$MKBOOT/mkbootfs ramdisk-20 | gzip > ramdisk-20.gz
 		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk-20.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot-20.img
 		
