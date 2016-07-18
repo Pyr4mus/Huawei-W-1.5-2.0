@@ -154,8 +154,6 @@ function compile(){
 		$MKBOOT/mkbootfs ramdisk-15 | gzip > ramdisk-15.gz
 		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk-15.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot-15.img
 		
-		echo " "
-		
 		echo "  MKBOOT   ramdisk-20"
 		$MKBOOT/mkbootfs ramdisk-20 | gzip > ramdisk-20.gz
 		$MKBOOT/mkbootimg --kernel zImage-dtb --ramdisk ramdisk-20.gz --cmdline "$CMD" --base 0x00000000 --pagesize 2048 --ramdisk_offset 0x02000000 -o boot-20.img
