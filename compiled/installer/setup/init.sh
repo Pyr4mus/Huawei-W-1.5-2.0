@@ -20,5 +20,9 @@ if [ ! -e /system/etc/init.d ]; then
 fi
 
 if [ ! -e /system/etc/init.d/S01turbozram ]; then 
-  mv /tmp/S01turbozram /system/etc/init.d/S01turbozram 
+	mv /tmp/S01turbozram /system/etc/init.d/S01turbozram 
 fi 
+
+if [ ! -e /system/bin/tinythermald ]; then 
+	mv /tmp/tinythermald /system/bin/tinythermald 
+fi

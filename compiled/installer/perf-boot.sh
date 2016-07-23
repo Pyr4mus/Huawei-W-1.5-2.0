@@ -23,14 +23,15 @@
 
 #===============================================================
 
+THERMALD_CONTROL="On"  #choices [On, off]
 KERNEL_CONTROL="Off"  #choices [On, off]
 FS_CONTROL="Off"  #choices [On, off]
 VMEM_CONTROL="Off"  #choices [On, off]
 NET_CONTROL="Off"  #choices [On, off]
 SD_MEMORY_CONTROL="Off"  #choices [On, off]
 MEMORY_CONTROL="Off"  #choices [On, off]
-DEFRAG_DB_CONTROL="Off"  #choices [On, off]
-ZIPALIGN_CONTROL="Off"  #choices [On, off] 
+DEFRAG_DB_CONTROL="On"  #choices [On, off]
+ZIPALIGN_CONTROL="On"  #choices [On, off] 
 DISABLE_LOGCAT_CONTROL="Off"  #choices [On, off] (Turning 'On' will disable logcat)
 
 #===============================================================
@@ -52,6 +53,11 @@ MAX_RATIO="100"
 #####################################
 # End Of User Customizable Settings #
 #####################################
+
+# ThermalD
+if [ $THERMALD_CONTROL = "On" ]; then
+	start tinythermald
+fi
 
 # Kernel
 if [ $KERNEL_CONTROL = "On" ]; then
