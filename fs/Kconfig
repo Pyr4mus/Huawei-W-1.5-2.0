@@ -273,4 +273,3 @@ source "fs/nls/Kconfig"
 source "fs/dlm/Kconfig"
 
 endmenu
-
