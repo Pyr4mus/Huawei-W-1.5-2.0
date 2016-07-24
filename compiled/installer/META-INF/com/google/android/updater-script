@@ -68,10 +68,11 @@ ui_print("Done");
 set_progress(0.750);
 run_program("/sbin/sleep", "1");
 
+set_perm_recursive(0, 2000, 0755, 0644, "/system/etc/init.d");
+set_perm(0, 0, 0755, "/system/etc/init.d/S01turbozram");
 set_perm(0, 0, 0755, "/system/bin/tinythermald");
 set_perm(0, 0, 0755, "/system/etc/post-init.sh");
 set_perm(0, 0, 0755, "/system/etc/perf-boot.sh");
-set_perm(0, 0, 0755, "/system/etc/init.d/S01turbozram");
 set_perm(0, 0, 0755, "/system/build.prop");
 set_perm(0, 0, 0755, "/system/xbin/busybox");
 set_perm(0, 0, 0755, "/data/su.img");
