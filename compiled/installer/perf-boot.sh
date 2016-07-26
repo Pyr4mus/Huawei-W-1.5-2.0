@@ -23,13 +23,12 @@
 
 #===============================================================
 
-THERMALD_CONTROL="On"  #choices [On, off]
-KERNEL_CONTROL="Off"  #choices [On, off]
-FS_CONTROL="Off"  #choices [On, off]
-VMEM_CONTROL="Off"  #choices [On, off]
+KERNEL_CONTROL="On"  #choices [On, off]
+FS_CONTROL="On"  #choices [On, off]
+VMEM_CONTROL="On"  #choices [On, off]
 NET_CONTROL="Off"  #choices [On, off]
-SD_MEMORY_CONTROL="Off"  #choices [On, off]
-MEMORY_CONTROL="Off"  #choices [On, off]
+SD_MEMORY_CONTROL="On"  #choices [On, off]
+MEMORY_CONTROL="On"  #choices [On, off]
 DEFRAG_DB_CONTROL="On"  #choices [On, off]
 ZIPALIGN_CONTROL="On"  #choices [On, off] 
 DISABLE_LOGCAT_CONTROL="Off"  #choices [On, off] (Turning 'On' will disable logcat)
@@ -45,19 +44,15 @@ MEM_DEBUG_LEVEL="0"
 #===============================================================
 
 # SD Cache Settings ( If SD_MEMORY_CONTROL is set to "On" )
-READ_AHEAD_KB="1024"
-VIR_READ_AHEAD_KB="128"
-MTD_READ_AHEAD_KB="16"
+READ_AHEAD_KB="768"
+VIR_READ_AHEAD_KB="256"
 MAX_RATIO="100"
 
 #####################################
 # End Of User Customizable Settings #
 #####################################
 
-# ThermalD
-if [ $THERMALD_CONTROL = "On" ]; then
-	start tinythermald
-fi
+mount -o rw,remount,rw /system
 
 # Kernel
 if [ $KERNEL_CONTROL = "On" ]; then
@@ -79,11 +74,11 @@ fi
 
 # FileSystem
 if [ $FS_CONTROL = "On" ]; then
-	echo "524288" > /proc/sys/fs/file-max
-	echo "32000" > /proc/sys/fs/inotify/max_queued_events
-	echo "256" > /proc/sys/fs/inotify/max_user_instances
-	echo "10240" > /proc/sys/fs/inotify/max_user_watches
-	echo "10" > /proc/sys/fs/lease-break-time
+	echo "43800" > /proc/sys/fs/file-max
+	echo "16384" > /proc/sys/fs/inotify/max_queued_events
+	echo "128" > /proc/sys/fs/inotify/max_user_instances
+	echo "8192" > /proc/sys/fs/inotify/max_user_watches
+	echo "45" > /proc/sys/fs/lease-break-time
 	echo "1048576" > /proc/sys/fs/nr_open
 fi
 
@@ -94,9 +89,6 @@ if [ $VMEM_CONTROL = "On" ]; then
 	echo "3" > /proc/sys/vm/drop_caches
 	echo "1" > /proc/sys/vm/overcommit_memory
 	echo "100" > /proc/sys/vm/overcommit_ratio
-	
-	swapoff nullswap
-	
 	echo "60" > /proc/sys/vm/dirty_ratio
 	echo "40" > /proc/sys/vm/dirty_background_ratio
 	echo "25" > /proc/sys/vm/vfs_cache_pressure
@@ -159,17 +151,8 @@ fi
 
 # SD Card Tweaks
 if [ $SD_MEMORY_CONTROL = "On" ]; then
-	echo "10" > /sys/devices/platform/msm_sdcc.3/idle_timeout	
-	echo "8" > /sys/block/mtdblock0/bdi/read_ahead_kb
-	echo "8" > /sys/block/mtdblock1/bdi/read_ahead_kb
-	echo "8" > /sys/block/mtdblock2/bdi/read_ahead_kb
-	echo "8" > /sys/block/mtdblock3/bdi/read_ahead_kb
-
-	echo $READ_AHEAD_KB > /sys/block/stl10/bdi/read_ahead_kb
-	echo $READ_AHEAD_KB > /sys/block/stl11/bdi/read_ahead_kb
-	echo $READ_AHEAD_KB > /sys/block/stl9/bdi/read_ahead_kb
 	echo $READ_AHEAD_KB > /sys/block/mmcblk0/queue/read_ahead_kb
-	echo $READ_AHEAD_KB > /sys/block/mmcblk1/queue/read_ahead_kb
+	echo $READ_AHEAD_KB > /sys/block/mmcblk0rpmb/queue/read_ahead_kb
 
 	echo $READ_AHEAD_KB > /sys/devices/virtual/bdi/179:0/read_ahead_kb
 	echo $READ_AHEAD_KB > /sys/devices/virtual/bdi/179:32/read_ahead_kb
@@ -240,7 +223,7 @@ if [ $MEMORY_CONTROL = "On" ]; then
 	done
 
 	for m in $LOOP $MMC; do
-		echo "1024" > $m/queue/nr_requests
+		echo "512" > $m/queue/nr_requests
 	done
 fi
 
@@ -283,19 +266,14 @@ if [ $DEFRAG_DB_CONTROL = "On" ]; then
 	do \
 		/system/xbin/sqlite3 $i 'VACUUM;'
 		/system/xbin/sqlite3 $i 'REINDEX;'
-	done
-
-	for i in \
-	`busybox find /external_sd -iname "*.db"`
-	do \
-		/system/xbin/sqlite3 $i 'VACUUM;'
-		/system/xbin/sqlite3 $i 'REINDEX;'
 	done	
 fi
 
 # Zipalign
 if [ $ZIPALIGN_CONTROL = "On" ]; then
-	for apk in /system/app/*.apk /system/priv-app/*.apk /system/framework/*.apk; do
+	for apk in \
+	`busybox find /system -iname "*.apk"`
+	do \
 		zipalign -c 4 $apk
 		ZIPCHECK=$?
 		if [ $ZIPCHECK -eq 1 ]; then
@@ -312,7 +290,9 @@ if [ $ZIPALIGN_CONTROL = "On" ]; then
 		fi
 	done	
 	
-	for apk in /data/app/*.apk; do
+	for apk in \
+	`busybox find /data -iname "*.apk"`
+	do \
 		zipalign -c 4 $apk
 		ZIPCHECK=$?
 		if [ $ZIPCHECK -eq 1 ]; then
@@ -330,9 +310,6 @@ if [ $ZIPALIGN_CONTROL = "On" ]; then
 	done
 fi
 
-# Run Init.d Scripts
-if [ -e /system/etc/init.d ]; then
-    busybox run-parts /system/etc/init.d
-fi
+mount -o ro,remount,ro /system
 
 echo "Perf-boot finished ..."

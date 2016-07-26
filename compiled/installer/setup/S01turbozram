@@ -1,13 +1,13 @@
 #!/system/bin/sh
 
-busybox swapoff /dev/block/zram0;
+busybox swapoff /dev/block/zram0
 
-echo 1 > /sys/block/zram0/reset;
-echo 104857600 > /sys/block/zram0/disksize;
+echo 1 > /sys/block/zram0/reset
+echo 104857600 > /sys/block/zram0/disksize
 
-busybox mkswap /dev/block/zram0;
-busybox swapon -p 2 /dev/block/zram0;
+busybox mkswap /dev/block/zram0
+busybox swapon -p 2 /dev/block/zram0
 
-echo 100 > /proc/sys/vm/swappiness;
+echo 100 > /proc/sys/vm/swappiness
 
 exit

@@ -24,7 +24,7 @@ if [ -e $INITRAMFS/negalite_kernel_HW_$REVISION-1.5.zip ]; then
 	echo "**************************************************************"
 	echo " "
 	if [[ $prompt_1 == "y" || $prompt_1 == "Y" ]]; then
-		adb shell rm /sdcard/bootperf.zip
+		adb shell rm /data/media/0/bootperf.zip
 	fi	
 	
 	echo " "

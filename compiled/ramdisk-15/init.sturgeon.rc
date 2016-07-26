@@ -149,6 +149,7 @@ on property:sys.boot_completed=1
 
 on property:sys.cw_home_ready=1
     write /sys/devices/system/cpu/cpu1/online 0
+    start tinythermald
 
 on property:sys.thermal_cpu_freq_level=1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
@@ -264,3 +265,9 @@ service perf-boot /system/etc/perf-boot.sh
     user root
     group root
     oneshot
+    
+service sysinit /system/xbin/busybox run-parts /system/etc/init.d/
+    class late_start
+    user root
+    group root
+    oneshot    
