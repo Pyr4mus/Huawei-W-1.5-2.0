@@ -29,8 +29,8 @@ VMEM_CONTROL="On"  #choices [On, off]
 NET_CONTROL="Off"  #choices [On, off]
 SD_MEMORY_CONTROL="On"  #choices [On, off]
 MEMORY_CONTROL="On"  #choices [On, off]
-DEFRAG_DB_CONTROL="On"  #choices [On, off]
-ZIPALIGN_CONTROL="On"  #choices [On, off] 
+DEFRAG_DB_CONTROL="Off"  #choices [On, off]
+ZIPALIGN_CONTROL="Off"  #choices [On, off] 
 DISABLE_LOGCAT_CONTROL="Off"  #choices [On, off] (Turning 'On' will disable logcat)
 
 #===============================================================
@@ -100,6 +100,7 @@ if [ $VMEM_CONTROL = "On" ]; then
 	echo "4" > /proc/sys/vm/min_free_order_shift
 	echo "1000" > /proc/sys/vm/dirty_expire_centisecs
 	echo "2000" > /proc/sys/vm/dirty_writeback_centisecs
+	echo "60" > /proc/sys/vm/swappiness
 fi
 
 # Net

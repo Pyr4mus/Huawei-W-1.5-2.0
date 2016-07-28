@@ -74,13 +74,6 @@ on post-fs-data
     write /sys/module/lpm_levels/system/cpu2/standalone_pc/idle_enabled 1
     write /sys/module/lpm_levels/system/cpu3/standalone_pc/idle_enabled 1
     write /sys/module/lpm_levels/system/cpu0/pc/idle_enabled 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "ondemand"
-    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 50000
-    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 90
-    write /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy 1
-    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor 4
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1190400
     write /sys/class/graphics/fb0/mdss_fb_delta_pixel 1
 
     setprop vold.post_fs_data_done 1
@@ -133,29 +126,17 @@ on boot
     # disable network time update
     setprop config.disable_networktime true
 
-    # Set the fix freq to 200MHz for KGSL
-    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 200000000
-    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 200000000
-    write /sys/class/kgsl/kgsl-3d0/devfreq/governor performance
-
 on property:sys.boot_completed=1
-    write /sys/devices/system/cpu/cpu2/online 0
-    write /sys/devices/system/cpu/cpu3/online 0
-    # Use userspace governor to set min=max=787MHz
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 787200
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
     write /sys/module/drv2605/parameters/vibrator_volt 130
 
 on property:sys.cw_home_ready=1
-    write /sys/devices/system/cpu/cpu1/online 0
+    start tinythermald
 
 on property:sys.thermal_cpu_freq_level=1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 787200
 
 on property:sys.thermal_cpu_freq_level=2
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "userspace"
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 300000
 
 # run Huawei retail mode, we need block key event

@@ -7,7 +7,3 @@ echo 104857600 > /sys/block/zram0/disksize
 
 busybox mkswap /dev/block/zram0
 busybox swapon -p 2 /dev/block/zram0
-
-echo 100 > /proc/sys/vm/swappiness
-
-exit

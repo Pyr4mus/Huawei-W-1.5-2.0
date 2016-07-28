@@ -16,12 +16,12 @@ CPU_MIN="300000" # [300000 384000 600000 787200 998400 1094400 1190400]
 CPU_ONLINE="1" #(1=All Cores Enabled)
 
 # CPU Governor
-CPU_GOV="smartmax" # [darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
+CPU_GOV="darkness" # [darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
 
 # Ondemand Settings(if chosen)
-OND_SAMP_RATE="20000"
-OND_SAMP_DOWN_FACT="2"
-OND_UP_THRESH="45"
+OND_SAMP_RATE="30000"
+OND_SAMP_DOWN_FACT="3"
+OND_UP_THRESH="60"
 OND_IO_BUSY="1"
 
 # GPU Frequency
@@ -29,13 +29,13 @@ GPU_FREQ_MAX="450000000" # [200000000 320000000 450000000]
 GPU_FREQ_MIN="200000000" # [200000000 320000000 450000000]
 
 # GPU Governor
-GPU_GOV="performance" # [cpufreq userspace powersave performance simple_ondemand]
+GPU_GOV="cpufreq" # [cpufreq userspace powersave performance simple_ondemand]
 
 # Vibrator Voltage
 VIB_VOLT="130" # [Do Not Exceed 150]
 
 # Scheduler
-SCHEDULER="vr" # [noop deadline row cfq vr sio zen fifo fiops]
+SCHEDULER="cfq" # [noop deadline row cfq vr sio zen fifo fiops]
 
 # MSM_HOTPLUG
 MSMH_PLUG="On" #choices: [On, Off]
@@ -84,22 +84,6 @@ echo $SCHEDULER > /sys/block/stl9/queue/scheduler
 echo $SCHEDULER > /sys/block/mmcblk0/queue/scheduler
 echo $SCHEDULER > /sys/block/mmcblk1/queue/scheduler
 
-# Governor Control
-echo $CPU_GOV > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-echo $CPU_GOV > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
-echo $CPU_GOV > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
-echo $CPU_GOV > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
-
-GOVERNOR=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
-
-if [ $GOVERNOR = "ondemand" ]; then
-	echo $OND_SAMP_RATE > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
-	echo $OND_UP_THRESH > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
-	echo $OND_IO_BUSY > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
-	echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/ignore_nice_load
-	echo $OND_SAMP_DOWN_FACT > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
-fi
-
 # GPU Control
 echo $GPU_FREQ_MIN > /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
 echo $GPU_FREQ_MAX > /sys/class/kgsl/kgsl-3d0/devfreq/max_freq
@@ -129,5 +113,18 @@ echo $CPU_MAX > /sys/module/cpu_boost/parameters/sync_threshold
 
 echo $CPU_MIN > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo $CPU_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+
+# Governor Control
+echo $CPU_GOV > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
+GOVERNOR=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
+
+if [ $GOVERNOR = "ondemand" ]; then
+	echo $OND_SAMP_RATE > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+	echo $OND_UP_THRESH > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+	echo $OND_IO_BUSY > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+	echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/ignore_nice_load
+	echo $OND_SAMP_DOWN_FACT > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+fi
 
 echo "Post-init finished ..."
