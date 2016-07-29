@@ -53,7 +53,7 @@ static void adreno_input_work(struct work_struct *work);
 
 static struct devfreq_msm_adreno_tz_data adreno_tz_data = {
 	.bus = {
-		.max = 350,
+		.max = 450,
 	},
 	.device_id = KGSL_DEVICE_3D0,
 };
