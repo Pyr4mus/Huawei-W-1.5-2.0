@@ -311,6 +311,4 @@ if [ $ZIPALIGN_CONTROL = "On" ]; then
 	done
 fi
 
-mount -o ro,remount,ro /system
-
 echo "Perf-boot finished ..."
