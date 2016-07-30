@@ -16,10 +16,16 @@ CPU_MIN="300000" # [300000 384000 600000 787200 998400 1094400 1190400]
 CPU_ONLINE="1" #(1=All Cores Enabled)
 
 # CPU Governor
-CPU_GOV="darkness" # [darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
+CPU_GOV="intellidemand" # [darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
+
+# CPU Thermal Control
+THERMAL_VDD="1"
+THERMAL_CORE="1"
 
 # Ondemand Settings(if chosen)
-OND_SAMP_RATE="30000"
+OND_SAMP_RATE="20000"
+OND_SAMP_RATE_MIN="10000"
+OND_SAMP_RATE_MAX="30000"
 OND_SAMP_DOWN_FACT="3"
 OND_UP_THRESH="60"
 OND_IO_BUSY="1"
@@ -29,7 +35,12 @@ GPU_FREQ_MAX="533000000" # [200000000 320000000 450000000 533000000]
 GPU_FREQ_MIN="200000000" # [200000000 320000000 450000000 533000000]
 
 # GPU Governor
-GPU_GOV="cpufreq" # [cpufreq userspace powersave performance simple_ondemand]
+GPU_GOV="msm-adreno-tz" # [cpufreq userspace powersave performance simple_ondemand msm-adreno-tz]
+
+# Simple GPU Algorithm
+SIMPLE_ACTIVATE="1"
+SIMPLE_LAZINESS="3"
+SIMPLE_RAMP_THRESH="6000"
 
 # Vibrator Voltage
 VIB_VOLT="130" # [Do Not Exceed 150]
@@ -89,6 +100,11 @@ echo $GPU_FREQ_MIN > /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
 echo $GPU_FREQ_MAX > /sys/class/kgsl/kgsl-3d0/devfreq/max_freq
 echo $GPU_GOV > /sys/class/kgsl/kgsl-3d0/devfreq/governor
 
+# Simple GPU Algorithm
+echo $SIMPLE_ACTIVATE > /sys/module/simple_gpu_algorithm/parameters/simple_gpu_activate
+echo $SIMPLE_LAZINESS > /sys/module/simple_gpu_algorithm/parameters/simple_laziness
+echo $SIMPLE_RAMP_THRESH > /sys/module/simple_gpu_algorithm/parameters/simple_ramp_threshold
+
 # Vibrator Voltage
 echo $VIB_VOLT > /sys/module/drv2605/parameters/vibrator_volt
 
@@ -103,7 +119,12 @@ else
 	echo 0 > /sys/devices/system/cpu/cpu3/online
 fi
 
+# Thermal Control
+echo $THERMAL_CORE > /sys/module/msm_thermal/core_control/enabled
+echo $THERMAL_VDD > /sys/module/msm_thermal/vdd_restriction/enabled
+
 # CPU BOOST
+echo 1 > /sys/module/cpu_boost/parameters/cpu_boost
 echo 100 > /sys/module/cpu_boost/parameters/boost_ms
 echo $CPU_BOOST_MAX > /sys/module/cpu_boost/parameters/input_boost_freq
 echo 100 > /sys/module/cpu_boost/parameters/input_boost_ms
@@ -125,6 +146,16 @@ if [ $GOVERNOR = "ondemand" ]; then
 	echo $OND_IO_BUSY > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 	echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/ignore_nice_load
 	echo $OND_SAMP_DOWN_FACT > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+fi
+
+if [ $GOVERNOR = "intellidemand" ]; then
+	echo $OND_SAMP_RATE_MIN > /sys/devices/system/cpu/cpufreq/intellidemand/sampling_rate_min
+	echo $OND_SAMP_RATE_MAX > /sys/devices/system/cpu/cpufreq/intellidemand/sampling_rate_max
+	echo $OND_SAMP_RATE > /sys/devices/system/cpu/cpufreq/intellidemand/sampling_rate
+	echo $OND_UP_THRESH > /sys/devices/system/cpu/cpufreq/intellidemand/up_threshold
+	echo $OND_IO_BUSY > /sys/devices/system/cpu/cpufreq/intellidemand/io_is_busy
+	echo "1" > /sys/devices/system/cpu/cpufreq/intellidemand/ignore_nice_load
+	echo $OND_SAMP_DOWN_FACT > /sys/devices/system/cpu/cpufreq/intellidemand/sampling_down_factor
 fi
 
 echo "Post-init finished ..."
