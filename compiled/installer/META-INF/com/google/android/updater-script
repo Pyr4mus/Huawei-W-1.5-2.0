@@ -95,12 +95,12 @@ run_program("/sbin/sleep", "1");
 #set_progress(0.935);
 #run_program("/sbin/sleep", "1");
 
-ui_print(" ");
-ui_print("Clearing Dalvik-Cache");
-delete_recursive("/data/dalvik-cache");
-ui_print("Done");
-set_progress(0.970);
-run_program("/sbin/sleep", "1");
+#ui_print(" ");
+#ui_print("Clearing Dalvik-Cache");
+#delete_recursive("/data/dalvik-cache");
+#ui_print("Done");
+#set_progress(0.970);
+#run_program("/sbin/sleep", "1");
 
 ui_print(" ");
 ui_print("Cleanup");

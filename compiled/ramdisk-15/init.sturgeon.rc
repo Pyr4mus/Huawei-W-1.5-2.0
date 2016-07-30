@@ -129,24 +129,6 @@ on boot
 on property:sys.boot_completed=1
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
     write /sys/module/drv2605/parameters/vibrator_volt 130
-    
-service post-init /system/etc/post-init.sh
-	class main
-	user root
-	group root
-	oneshot
-
-service perf-boot /system/etc/perf-boot.sh
-	class main
-	user root
-	group root
-	oneshot
-
-service sysinit /system/xbin/busybox run-parts /system/etc/init.d/
-	class main
-	user root
-	group root
-	oneshot     
 
 on property:sys.cw_home_ready=1
     start tinythermald
@@ -155,7 +137,7 @@ on property:sys.thermal_cpu_freq_level=1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 787200
 
 on property:sys.thermal_cpu_freq_level=2
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 300000    
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 300000
 
 # run Huawei retail mode, we need block key event
 # beacuse the key event will casue retail app exit
@@ -250,4 +232,22 @@ service sensorhd /system/bin/shd
     socket shddata stream 0666 root root
     user  root
     group root
-    oneshot   
+    oneshot
+
+service post-init /system/etc/post-init.sh
+	class late_start
+	user root
+	group root
+	oneshot
+
+service perf-boot /system/etc/perf-boot.sh
+	class late_start
+	user root
+	group root
+	oneshot
+
+service sysinit /system/xbin/busybox run-parts /system/etc/init.d/
+	class late_start
+	user root
+	group root
+	oneshot

@@ -16,10 +16,10 @@ CPU_MIN="300000" # [300000 384000 600000 787200 998400 1094400 1190400]
 CPU_ONLINE="1" #(1=All Cores Enabled)
 
 # CPU Governor
-CPU_GOV="intellidemand" # [darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
+CPU_GOV="ondemand" # [darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
 
 # CPU Thermal Control
-THERMAL_VDD="1"
+THERMAL_VDD="0"
 THERMAL_CORE="1"
 
 # Ondemand Settings(if chosen)
@@ -46,7 +46,7 @@ SIMPLE_RAMP_THRESH="6000"
 VIB_VOLT="130" # [Do Not Exceed 150]
 
 # Scheduler
-SCHEDULER="cfq" # [noop deadline row cfq vr sio zen fifo fiops]
+SCHEDULER="vr" # [noop deadline row cfq vr sio zen fifo fiops]
 
 # MSM_HOTPLUG
 MSMH_PLUG="On" #choices: [On, Off]
