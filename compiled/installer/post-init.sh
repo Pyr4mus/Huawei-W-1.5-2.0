@@ -124,20 +124,6 @@ echo $SIMPLE_RAMP_THRESH > /sys/module/simple_gpu_algorithm/parameters/simple_ra
 # Vibrator Voltage
 echo $VIB_VOLT > /sys/module/drv2605/parameters/vibrator_volt
 
-# CPU Control
-if [ $CPU_ONLINE = "1" ]; then
-	echo 1 > /sys/devices/system/cpu/cpu1/online
-	echo 1 > /sys/devices/system/cpu/cpu2/online
-	echo 1 > /sys/devices/system/cpu/cpu3/online
-else
-	echo 0 > /sys/devices/system/cpu/cpu1/online
-	echo 0 > /sys/devices/system/cpu/cpu2/online
-	echo 0 > /sys/devices/system/cpu/cpu3/online
-fi
-
-echo $CPU_MIN > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-echo $CPU_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-
 # Governor Control
 echo $CPU_GOV > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
@@ -179,19 +165,28 @@ if [ $GOVERNOR = "intelliactive" ]; then
 	echo $INTELLI_UP_THRESH_ANY_LOAD > /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_load
 fi
 
-# Thermal Control
-echo $THERMAL_CORE > /sys/module/msm_thermal/core_control/enabled
-echo $THERMAL_VDD > /sys/module/msm_thermal/vdd_restriction/enabled
-echo $CPU_MIN > /sys/module/msm_thermal/vdd_restriction/vdd-apps/value
-echo 7 > /sys/module/msm_thermal/vdd_restriction/vdd-dig/value
+# CPU Control
+if [ $CPU_ONLINE = "1" ]; then
+	echo 1 > /sys/devices/system/cpu/cpu1/online
+	echo 1 > /sys/devices/system/cpu/cpu2/online
+	echo 1 > /sys/devices/system/cpu/cpu3/online
+else
+	echo 0 > /sys/devices/system/cpu/cpu1/online
+	echo 0 > /sys/devices/system/cpu/cpu2/online
+	echo 0 > /sys/devices/system/cpu/cpu3/online
+fi
+
+echo $CPU_MIN > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 
 INTELLI_BOOST=`cat /sys/devices/system/cpu/cpufreq/intelliactive/boost`
 
 # CPU BOOST
 if [ $INTELLI_BOOST = "1" ]; then
 	echo 0 > /sys/module/cpu_boost/parameters/cpu_boost
+	echo 1190400 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 else
 	echo 1 > /sys/module/cpu_boost/parameters/cpu_boost
+	echo $CPU_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 fi
 echo 100 > /sys/module/cpu_boost/parameters/boost_ms
 echo $CPU_BOOST_MAX > /sys/module/cpu_boost/parameters/input_boost_freq
@@ -199,5 +194,11 @@ echo 100 > /sys/module/cpu_boost/parameters/input_boost_ms
 echo 1 > /sys/module/cpu_boost/parameters/load_based_syncs
 echo 15 > /sys/module/cpu_boost/parameters/migration_load_threshold
 echo $CPU_MAX > /sys/module/cpu_boost/parameters/sync_threshold
+
+# Thermal Control
+echo $THERMAL_CORE > /sys/module/msm_thermal/core_control/enabled
+echo $THERMAL_VDD > /sys/module/msm_thermal/vdd_restriction/enabled
+echo $CPU_MIN > /sys/module/msm_thermal/vdd_restriction/vdd-apps/value
+echo 7 > /sys/module/msm_thermal/vdd_restriction/vdd-dig/value
 
 echo "Post-init finished ..."
