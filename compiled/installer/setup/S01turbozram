@@ -1,9 +1,33 @@
 #!/system/bin/sh
 
-busybox swapoff /dev/block/zram0
+modprobe zram num_devices=4
 
-echo 1 > /sys/block/zram0/reset
-echo 104857600 > /sys/block/zram0/disksize
+swapoff /dev/block/zram1;
+swapoff /dev/block/zram2;
+swapoff /dev/block/zram3;
+swapoff /dev/block/zram0;
+ 
+echo 1 > /sys/block/zram1/reset;
+echo 104857600 > /sys/block/zram1/disksize;
+mkswap /dev/block/zram1;
 
-busybox mkswap /dev/block/zram0
-busybox swapon -p 2 /dev/block/zram0
+echo 1 > /sys/block/zram2/reset;
+echo 104857600 > /sys/block/zram2/disksize;
+mkswap /dev/block/zram2;
+
+echo 1 > /sys/block/zram3/reset;
+echo 104857600 > /sys/block/zram3/disksize;
+mkswap /dev/block/zram3;
+
+echo 1 > /sys/block/zram0/reset;
+echo 104857600 > /sys/block/zram0/disksize;
+mkswap /dev/block/zram0;
+ 
+swapon -p 2 /dev/block/zram0;
+swapon -p 2 /dev/block/zram3;
+swapon -p 2 /dev/block/zram2;
+swapon -p 2 /dev/block/zram1;
+ 
+echo 100 > /proc/sys/vm/swappiness;
+ 
+exit

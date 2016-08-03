@@ -47,7 +47,7 @@ static struct zram *zram_devices;
 #define ALLOC_ERROR_LOG_RATE_MS 1000
 
 /* Module params (documentation at end) */
-static unsigned int num_devices = 1;
+static unsigned int num_devices = 4;
 
 static inline struct zram *dev_to_zram(struct device *dev)
 {
@@ -969,7 +969,6 @@ static void __exit zram_exit(void)
 	for (i = 0; i < num_devices; i++) {
 		zram = &zram_devices[i];
 
-		get_disk(zram->disk);
 		destroy_device(zram);
 		/*
 		 * Shouldn't access zram->disk after destroy_device
