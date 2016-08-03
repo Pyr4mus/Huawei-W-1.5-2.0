@@ -29,13 +29,13 @@ GPU_GOV="msm-adreno-tz" # [cpufreq userspace powersave performance simple_ondema
 # Simple GPU Algorithm
 SIMPLE_ACTIVATE="1"
 SIMPLE_LAZINESS="3"
-SIMPLE_RAMP_THRESH="6000"
+SIMPLE_RAMP_THRESH="7000"
 
 # Vibrator Voltage
 VIB_VOLT="130" # [Do Not Exceed 150]
 
 # Scheduler
-SCHEDULER="vr" # [noop deadline row cfq vr sio zen fifo fiops]
+SCHEDULER="cfq" # [noop deadline row cfq vr sio zen fifo fiops]
 
 # MSM_HOTPLUG
 MSMH_PLUG="On" #choices: [On, Off]
