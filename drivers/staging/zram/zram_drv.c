@@ -30,6 +30,7 @@
 #include <linux/highmem.h>
 #include <linux/slab.h>
 #include <linux/lzo.h>
+#include <linux/lz4.h>
 #include <linux/string.h>
 #include <linux/vmalloc.h>
 #include <linux/ratelimit.h>
@@ -210,9 +211,15 @@ static struct zram_meta *zram_meta_alloc(u64 disksize)
 	if (!meta)
 		goto out;
 
+	#ifdef CONFIG_CRYPTO_LZ4
+	meta->compress_workmem = kzalloc(LZ4_MEM_COMPRESS, GFP_KERNEL);
+	if (!meta->compress_workmem)
+		goto free_meta;
+	#else
 	meta->compress_workmem = kzalloc(LZO1X_MEM_COMPRESS, GFP_KERNEL);
 	if (!meta->compress_workmem)
 		goto free_meta;
+	#endif
 
 	meta->compress_buffer =
 		(void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, 1);
@@ -322,7 +329,9 @@ static void zram_free_page(struct zram *zram, size_t index)
 
 static int zram_decompress_page(struct zram *zram, char *mem, u32 index)
 {
+	#ifdef CONFIG_CRYPTO_LZO
 	int ret = LZO_E_OK;
+	#endif
 	size_t clen = PAGE_SIZE;
 	unsigned char *cmem;
 	struct zram_meta *meta = zram->meta;
@@ -337,17 +346,23 @@ static int zram_decompress_page(struct zram *zram, char *mem, u32 index)
 	if (meta->table[index].size == PAGE_SIZE)
 		copy_page(mem, cmem);
 	else
+		#ifdef CONFIG_CRYPTO_LZ4	
+		ret = lz4_decompress(cmem, meta->table[index].size,
+						mem, &clen);
+		#else
 		ret = lzo1x_decompress_safe(cmem, meta->table[index].size,
 						mem, &clen);
+		#endif						
 	zs_unmap_object(meta->mem_pool, handle);
 
+	#ifdef CONFIG_CRYPTO_LZO
 	/* Should NEVER happen. Return bio error if it does. */
 	if (unlikely(ret != LZO_E_OK)) {
 		pr_err("Decompression failed! err=%d, page=%u\n", ret, index);
 		atomic64_inc(&zram->stats.failed_reads);
 		return ret;
 	}
-
+	#endif
 	return 0;
 }
 
@@ -457,8 +472,13 @@ static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index,
 			zram_test_flag(meta, index, ZRAM_ZERO)))
 		zram_free_page(zram, index);
 
+	#ifdef CONFIG_CRYPTO_LZ4
+	ret = lz4_compress(uncmem, PAGE_SIZE, src, &clen,
+			       meta->compress_workmem);
+	#else
 	ret = lzo1x_1_compress(uncmem, PAGE_SIZE, src, &clen,
 			       meta->compress_workmem);
+	#endif			       			       
 
 	if (!is_partial_io(bvec)) {
 		kunmap_atomic(user_mem);
