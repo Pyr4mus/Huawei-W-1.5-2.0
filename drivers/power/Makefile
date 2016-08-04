@@ -69,3 +69,4 @@ obj-$(CONFIG_CHARGER_TPS65090)	+= tps65090-charger.o
 obj-$(CONFIG_BATTERY_BCL)	+= battery_current_limit.o
 obj-$(CONFIG_POWER_RESET)	+= reset/
 obj-y				+= qcom/
+obj-$(CONFIG_FORCE_FAST_CHARGE) += fastcharge.o

@@ -7,6 +7,9 @@
 # SELinux Control
 SELINUX="Off"
 
+# Fast Charge
+FAST_CHARGE="On" #choices: [On, Off]
+
 # CPU Settings
 CPU_MAX="787200" # [300000 384000 600000 787200 998400 1094400 1190400]
 CPU_BOOST_MAX="1190400" # [300000 384000 600000 787200 998400 1094400 1190400]
@@ -118,6 +121,13 @@ if [ $SELINUX = "On" ]; then
 	echo "1" > /sys/fs/selinux/enforce
 else
 	echo "0" > /sys/fs/selinux/enforce
+fi
+
+# Fast charge
+if [ $FAST_CHARGE = "On" ]; then
+    echo "1" > /sys/kernel/fast_charge/force_fast_charge
+else
+ 	echo "0" > /sys/kernel/fast_charge/force_fast_charge
 fi
 
 # Scheduler
