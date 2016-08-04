@@ -24,6 +24,10 @@ if [ -e $PARENT/build.log ]; then
 	echo "  CLEAN   build.log"
 	rm $PARENT/build.log
 fi
+if [ -e $PARENT/arch/arm/boot/compressed/piggy.lz4 ]; then
+	echo "  CLEAN   piggy.lz4"
+	rm $PARENT/arch/arm/boot/compressed/piggy.lz4
+fi
 if [ -e $INITRAMFS/zImage-dtb ]; then
 	echo "  CLEAN   zImage-dtb"
 	rm $INITRAMFS/zImage-dtb
