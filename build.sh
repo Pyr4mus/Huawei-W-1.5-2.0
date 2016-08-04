@@ -80,8 +80,10 @@ echo "**************************************************************"
 echo "**************************************************************"
 echo " "
 
-export PATH=$PARENT/ccache:$PARENT/toolchain-4.9.4/bin:$PATH
-export CROSS_COMPILE=arm-cortex_a7-linux-gnueabihf-
+#export PATH=$PARENT/ccache:$PARENT/toolchains/toolchain-4.9.4/bin:$PATH
+#export CROSS_COMPILE=arm-cortex_a7-linux-gnueabihf-
+export PATH=$PARENT/ccache:$PARENT/toolchains/sabermod-4.9/bin:$PATH
+export CROSS_COMPILE=arm-eabi-
 export ARCH=arm
 
 #make sturgeon_stock_defconfig
