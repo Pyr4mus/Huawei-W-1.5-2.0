@@ -9,6 +9,8 @@ PARENT=`readlink -f .`
 INITRAMFS=$PARENT/compiled
 INSTALLER=$PARENT/compiled/installer
 MKBOOT=$PARENT/mkboot
+TOOLCHAIN="Uber" #Choices:[Linaro, SaberMod, Uber]
+CONFIG="Nega" #Choices:[Stock, Nega]
 
 chmod 755 $PARENT/scripts/gcc-wrapper.py
 
@@ -80,14 +82,31 @@ echo "**************************************************************"
 echo "**************************************************************"
 echo " "
 
-#export PATH=$PARENT/ccache:$PARENT/toolchains/toolchain-4.9.4/bin:$PATH
-#export CROSS_COMPILE=arm-cortex_a7-linux-gnueabihf-
-export PATH=$PARENT/ccache:$PARENT/toolchains/sabermod-4.9/bin:$PATH
-export CROSS_COMPILE=arm-eabi-
+## Linaro Toolchain ##
+if [ $TOOLCHAIN = "Linaro" ]; then
+	export PATH=$PARENT/ccache:$PARENT/toolchains/linaro-4.9.4/bin:$PATH
+	export CROSS_COMPILE=arm-cortex_a7-linux-gnueabihf-
+fi;
+
+## SaberMod Toolchain ##
+if [ $TOOLCHAIN = "SaberMod" ]; then
+	export PATH=$PARENT/ccache:$PARENT/toolchains/sabermod-4.9.x/bin:$PATH
+	export CROSS_COMPILE=arm-eabi-
+fi;
+
+## Uber Toolchain ##
+if [ $TOOLCHAIN = "Uber" ]; then
+	export PATH=$PARENT/ccache:$PARENT/toolchains/ubertc-4.9.4/bin:$PATH
+	export CROSS_COMPILE=arm-eabi-
+fi;
+
 export ARCH=arm
 
-#make sturgeon_stock_defconfig
-make sturgeon_defconfig
+if [ $CONFIG = "Stock" ]; then
+	make sturgeon_stock_defconfig
+else
+	make sturgeon_defconfig
+fi;
 
 echo " "
 echo "**************************************************************"
