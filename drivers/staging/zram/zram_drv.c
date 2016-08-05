@@ -473,7 +473,7 @@ static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index,
 		zram_free_page(zram, index);
 
 	#ifdef CONFIG_CRYPTO_LZ4
-	ret = lz4_compress(uncmem, PAGE_SIZE, src, &clen,
+	ret = lz4hc_compress(uncmem, PAGE_SIZE, src, &clen,
 			       meta->compress_workmem);
 	#else
 	ret = lzo1x_1_compress(uncmem, PAGE_SIZE, src, &clen,
