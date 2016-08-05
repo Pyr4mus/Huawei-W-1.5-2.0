@@ -38,7 +38,13 @@ SIMPLE_RAMP_THRESH="7000"
 VIB_VOLT="130" # [Do Not Exceed 150]
 
 # Scheduler
-SCHEDULER="cfq" # [noop deadline row cfq vr sio zen fifo fiops]
+SCHEDULER="fiops" # [noop deadline row cfq vr sio zen fifo fiops]
+
+# KSM
+RUN="1"
+DEFERRED_TIMER="1"
+PAGES_TO_SCAN="128"
+SLEEP_MILLISEC="2000"
 
 # MSM_HOTPLUG
 MSMH_PLUG="On" #choices: [On, Off]
@@ -53,7 +59,7 @@ MSMH_FAST_LANE_LOAD="200"
 MSMH_OFFLINE_LOAD="0"
 
 # CPU Governor
-CPU_GOV="conservative" # [ conservative darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
+CPU_GOV="interactiveX" # [ conservative darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
 
 # Global Governor Settings
 GOV_IGNORE_NICE_LOAD="0"
@@ -129,6 +135,12 @@ if [ $FAST_CHARGE = "On" ]; then
 else
  	echo "0" > /sys/kernel/fast_charge/force_fast_charge
 fi
+
+# KSM
+echo $RUN > /sys/kernel/mm/ksm/run
+echo $DEFERRED_TIMER > /sys/kernel/mm/ksm/deferred_timer
+echo $PAGES_TO_SCAN > /sys/kernel/mm/ksm/pages_to_scan
+echo $SLEEP_MILLISEC > /sys/kernel/mm/ksm/sleep_millisecs
 
 # Scheduler
 echo $SCHEDULER > /sys/block/stl10/queue/scheduler

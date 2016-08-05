@@ -30,7 +30,7 @@ NET_CONTROL="Off"  #choices [On, off]
 SD_MEMORY_CONTROL="On"  #choices [On, off]
 MEMORY_CONTROL="On"  #choices [On, off]
 DEFRAG_DB_CONTROL="Off"  #choices [On, off]
-ZIPALIGN_CONTROL="Off"  #choices [On, off] 
+ZIPALIGN_CONTROL="On"  #choices [On, off] 
 DISABLE_LOGCAT_CONTROL="Off"  #choices [On, off] (Turning 'On' will disable logcat)
 
 #===============================================================
@@ -52,7 +52,16 @@ MAX_RATIO="100"
 # End Of User Customizable Settings #
 #####################################
 
-mount -o rw,remount,rw /system
+tune2fs -o journal_data_writeback /system
+tune2fs -O ^has_journal /system
+tune2fs -o journal_data_writeback /cache
+tune2fs -O ^has_journal /cache
+tune2fs -o journal_data_writeback /data
+tune2fs -O ^has_journal /data
+
+busybox mount -o remount,noatime,noauto_da_alloc,nodiratime,barrier =0,nobh /system
+busybox mount -o remount,noatime,noauto_da_alloc,nosuid,nodev,nodir atime,barrier=0,nobh /data
+busybox mount -o remount,noatime,noauto_da_alloc,nosuid,nodev,nodir atime,barrier=0,nobh /cache
 
 # Kernel
 if [ $KERNEL_CONTROL = "On" ]; then
@@ -70,6 +79,9 @@ if [ $KERNEL_CONTROL = "On" ]; then
 	echo "5000000" > /proc/sys/kernel/sched_latency_ns
 	echo "1000000" > /proc/sys/kernel/sched_min_granularity_ns
 	echo "1000000" > /proc/sys/kernel/sched_wakeup_granularity_ns
+	echo "64000" > /proc/sys/kernel/msgmni
+	echo "64000" > /proc/sys/kernel/msgmax
+	echo "500,512000,64,2048" > /proc/sys/kernel/sem
 fi
 
 # FileSystem
@@ -78,7 +90,7 @@ if [ $FS_CONTROL = "On" ]; then
 	echo "16384" > /proc/sys/fs/inotify/max_queued_events
 	echo "128" > /proc/sys/fs/inotify/max_user_instances
 	echo "8192" > /proc/sys/fs/inotify/max_user_watches
-	echo "45" > /proc/sys/fs/lease-break-time
+	echo "10" > /proc/sys/fs/lease-break-time
 	echo "1048576" > /proc/sys/fs/nr_open
 fi
 
@@ -89,17 +101,17 @@ if [ $VMEM_CONTROL = "On" ]; then
 	echo "3" > /proc/sys/vm/drop_caches
 	echo "1" > /proc/sys/vm/overcommit_memory
 	echo "100" > /proc/sys/vm/overcommit_ratio
-	echo "60" > /proc/sys/vm/dirty_ratio
-	echo "40" > /proc/sys/vm/dirty_background_ratio
-	echo "25" > /proc/sys/vm/vfs_cache_pressure
+	echo "90" > /proc/sys/vm/dirty_ratio
+	echo "70" > /proc/sys/vm/dirty_background_ratio
+	echo "50" > /proc/sys/vm/vfs_cache_pressure
 	echo "0" > /proc/sys/vm/oom_kill_allocating_task
 	echo "4096" > /proc/sys/vm/min_free_kbytes
 	echo "0" > /proc/sys/vm/panic_on_oom
-	echo "3" > /proc/sys/vm/page-cluster
+	echo "8" > /proc/sys/vm/page-cluster
 	echo "0" > /proc/sys/vm/laptop_mode
 	echo "4" > /proc/sys/vm/min_free_order_shift
-	echo "1000" > /proc/sys/vm/dirty_expire_centisecs
-	echo "2000" > /proc/sys/vm/dirty_writeback_centisecs
+	echo "500" > /proc/sys/vm/dirty_expire_centisecs
+	echo "1000" > /proc/sys/vm/dirty_writeback_centisecs
 	echo "60" > /proc/sys/vm/swappiness
 fi
 
