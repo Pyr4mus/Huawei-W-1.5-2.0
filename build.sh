@@ -10,7 +10,7 @@ INITRAMFS=$PARENT/compiled
 INSTALLER=$PARENT/compiled/installer
 MKBOOT=$PARENT/mkboot
 TOOLCHAIN="Uber" #Choices:[Linaro, SaberMod, Uber]
-CONFIG="Nega" #Choices:[Stock, Nega]
+CONFIG="Stock" #Choices:[Stock, Nega]
 
 chmod 755 $PARENT/scripts/gcc-wrapper.py
 
@@ -173,7 +173,7 @@ function compile(){
 		echo " "
 		
 		cd $INITRAMFS
-		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F pm_levels.sleep_disabled=1 console=null androidboot.console=null zcache'
+		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F selinux=1 pm_levels.sleep_disabled=1 console=null androidboot.console=null'
 
 		echo "  MKBOOT   ramdisk-15"
 		$MKBOOT/mkbootfs ramdisk-15 | gzip > ramdisk-15.gz

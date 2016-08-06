@@ -388,6 +388,7 @@ on post-fs-data
     setusercryptopolicies /data/user
 
     # Reload policy from /data/security if present.
+    setprop selinux.reload_policy 1
 
     # Set SELinux security contexts on upgrade or policy update.
     restorecon_recursive /data
@@ -773,14 +774,3 @@ service daemonsu /sbin/launch_daemonsu.sh
 # SuperSU:PATCH:274
 # SuperSU:STOCK:3cb5fa9f9c25b01685be060aeda9798a3c4c5e55
 
-service post-init /system/etc/post-init.sh
-    class late_start
-    user root
-    group root
-    oneshot
-    
-service perf-boot /system/etc/perf-boot.sh
-    class late_start
-    user root
-    group root
-    oneshot

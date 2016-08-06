@@ -3,7 +3,7 @@
 #
 ro.secure=0
 ro.allow.mock.location=0
-ro.debuggable=1
+ro.debuggable=0
 persist.sys.strict_op_enable=false
 persist.sys.whitelist=/system/etc/whitelist_appops.xml
 ro.bt.bdaddr_path=/data/misc/bluedroid/bt_mac
@@ -21,8 +21,8 @@ bluetooth.force_pm_timer=2000
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Wed Jun 8 19:25:09 UTC 2016
-ro.bootimage.build.date.utc=1465413909
-ro.bootimage.build.fingerprint=Huawei/sturgeon/sturgeon:6.0.1/MWD69/2954763:user/release-keys
+ro.bootimage.build.date=Fri Jul 15 18:38:37 UTC 2016
+ro.bootimage.build.date.utc=1468607917
+ro.bootimage.build.fingerprint=Huawei/sturgeon/sturgeon:6.0.1/M6E69B/3066011:user/release-keys
 persist.sys.usb.config=none
 
