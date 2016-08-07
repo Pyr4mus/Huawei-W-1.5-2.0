@@ -388,7 +388,6 @@ on post-fs-data
     setusercryptopolicies /data/user
 
     # Reload policy from /data/security if present.
-    setprop selinux.reload_policy 1
 
     # Set SELinux security contexts on upgrade or policy update.
     restorecon_recursive /data
