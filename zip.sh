@@ -56,7 +56,7 @@ echo "**************************************************************"
 echo " "
 
 cd $INITRAMFS
-CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F pm_levels.sleep_disabled=1 console=null androidboot.console=null zcache'
+CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F selinux=1 pm_levels.sleep_disabled=1 console=null androidboot.console=null zcache'
 
 echo "  MKBOOT   ramdisk-15"
 $MKBOOT/mkbootfs ramdisk-15 | gzip > ramdisk-15.gz
@@ -80,7 +80,7 @@ zip -9 -r bootperf perf-boot.sh post-init.sh
 
 mv $INITRAMFS/boot-15.img kernel/boot.img
 cp -f $INITRAMFS/su-15.img setup/su.img	
-zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 bootperf.zip
+zip -9 -r negalite_kernel_HW kernel META-INF setup superuser com.grarak.kerneladiutor-1 bootperf.zip
 mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-1.5.zip
 
 rm kernel/boot.img
@@ -88,5 +88,5 @@ rm setup/su.img
 
 mv $INITRAMFS/boot-20.img kernel/boot.img
 cp -f $INITRAMFS/su-20.img setup/su.img
-zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 bootperf.zip
+zip -9 -r negalite_kernel_HW kernel META-INF setup superuser com.grarak.kerneladiutor-1 bootperf.zip
 mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-2.0.zip

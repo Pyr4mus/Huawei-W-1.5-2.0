@@ -53,8 +53,9 @@ set_progress(0.450);
 run_program("/sbin/sleep", "1");
 
 ui_print(" ");
-ui_print("Installing SuperUser(SystemLess)");
+ui_print("Installing Kingo/SuperSU Superuser");
 run_program("/tmp/su.sh");
+package_extract_dir("superuser", "/system");
 ui_print("Done");
 set_progress(0.600);
 run_program("/sbin/sleep", "1");

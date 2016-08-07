@@ -19,8 +19,4 @@ if [ ! -e /system/etc/init.d ]; then
 	mkdir /system/etc/init.d
 fi
 
-if [ -e /system/etc/init.d/S01turbozram ]; then
-	rm -f /system/etc/init.d/S01turbozram
-	sleep 2
-	mv /tmp/S01turbozram /system/etc/init.d/S01turbozram 
-fi
+mv /tmp/S01turbozram /system/etc/init.d/S01turbozram 

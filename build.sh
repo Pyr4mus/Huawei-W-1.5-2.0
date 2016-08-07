@@ -10,7 +10,7 @@ INITRAMFS=$PARENT/compiled
 INSTALLER=$PARENT/compiled/installer
 MKBOOT=$PARENT/mkboot
 TOOLCHAIN="Uber" #Choices:[Linaro, SaberMod, Uber]
-CONFIG="Stock" #Choices:[Stock, Nega]
+CONFIG="Nega" #Choices:[Stock, Nega]
 
 chmod 755 $PARENT/scripts/gcc-wrapper.py
 
@@ -205,7 +205,7 @@ function compile(){
 		
 		mv $INITRAMFS/boot-20.img kernel/boot.img
 		cp -f $INITRAMFS/su-20.img setup/su.img
-		zip -9 -r negalite_kernel_HW kernel META-INF setup com.grarak.kerneladiutor-1 bootperf.zip
+		zip -9 -r negalite_kernel_HW kernel META-INF setup superuser com.grarak.kerneladiutor-1 bootperf.zip
 		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-2.0.zip
 	
 		echo " "
