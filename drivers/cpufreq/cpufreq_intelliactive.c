@@ -130,9 +130,9 @@ static bool io_is_busy = 1;
  * up_threshold_any_cpu_freq then do not let the frequency to drop below
  * sync_freq
  */
-static unsigned int up_threshold_any_cpu_load = 95;
-static unsigned int sync_freq = 1040000;
-static unsigned int up_threshold_any_cpu_freq = 1300000;
+static unsigned int up_threshold_any_cpu_load = 0;
+static unsigned int sync_freq = 0;
+static unsigned int up_threshold_any_cpu_freq = 0;
 
 static int two_phase_freq_array[NR_CPUS] = {[0 ... NR_CPUS-1] = 1300000} ;
 

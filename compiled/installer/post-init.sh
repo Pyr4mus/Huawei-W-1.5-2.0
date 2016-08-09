@@ -62,7 +62,7 @@ MSMH_OFFLINE_LOAD="0"
 CPU_GOV="interactiveX" # [ conservative darkness intellidemand intelliactive interactiveX thunderx pegasusq smartmax ondemand userspace powersave performance]
 
 # Global Governor Settings
-GOV_IGNORE_NICE_LOAD="0"
+GOV_IGNORE_NICE_LOAD="1"
 GOV_IO_IS_BUSY="0"
 
 # Conservative/Ondemand/Intellidemand/PegasusQ Settings(if chosen)
@@ -111,7 +111,7 @@ SMARTMAX_BOOST_FREQ="1190400"
 SMARTMAX_TOUCH_POKE_FREQ="1190400"		
 SMARTMAX_INPUT_BOOST_DUR="90000"
 SMARTMAX_MIN_SAMP_RATE="10000"
-SMARTMAX_SAMP_RATE="30000"
+SMARTMAX_SAMP_RATE="20000"
 # ThunderX Specific Settings
 THUNDERX_SLEEP_WAKEUP_FREQ="600000"
 THUNDERX_SAMP_RATE_JIFFIES="2"
