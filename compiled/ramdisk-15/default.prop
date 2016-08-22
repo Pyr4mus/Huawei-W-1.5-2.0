@@ -16,6 +16,8 @@ ro.dalvik.vm.native.bridge=0
 debug.atrace.tags.enableflags=0
 ro.adb.secure=1
 persist.adb.notify=0
+persist.service.adb.enable=1                                                    
+persist.service.debuggable=1
 persist.raft.pump_kmsg=1
 bluetooth.force_pm_timer=2000
 #
@@ -24,5 +26,5 @@ bluetooth.force_pm_timer=2000
 ro.bootimage.build.date=Fri Jul 15 18:38:37 UTC 2016
 ro.bootimage.build.date.utc=1468607917
 ro.bootimage.build.fingerprint=Huawei/sturgeon/sturgeon:6.0.1/M6E69B/3066011:user/release-keys
-persist.sys.usb.config=none
+persist.sys.usb.config=adb
 
