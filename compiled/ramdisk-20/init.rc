@@ -273,7 +273,6 @@ on post-fs
 
 	insmod /system/lib/modules/zram.ko
 	insmod /system/lib/modules/cifs.ko
-	insmod /system/lib/modules/f2fs.ko
 
     start logd
     # once everything is setup, no need to modify /
