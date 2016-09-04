@@ -69,7 +69,7 @@ set_progress(0.600);
 run_program("/sbin/sleep", "1");
 
 ui_print(" ");
-ui_print("Installing Busybox 1.25.0");
+ui_print("Installing Busybox 1.26.0-Negalite");
 run_program("/tmp/busybox.sh");
 run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
 symlink("/system/xbin/busybox", "/system/bin/busybox");
