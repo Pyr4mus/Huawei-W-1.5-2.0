@@ -56,6 +56,18 @@ if [ -e $INITRAMFS/installer/bootperf.zip ]; then
 	echo "  CLEAN   bootperf.zip"
 	rm $INITRAMFS/installer/bootperf.zip
 fi;
+if [ -e $INSTALLER/modules/zram.ko ]; then
+	echo "  CLEAN   zram.ko"
+	rm $INSTALLER/modules/zram.ko
+fi;
+if [ -e $INSTALLER/modules/cifs.ko ]; then
+	echo "  CLEAN   cifs.ko"
+	rm $INSTALLER/modules/cifs.ko
+fi;
+if [ -e $INSTALLER/modules/f2fs.ko ]; then
+	echo "  CLEAN   f2fs.ko"
+	rm $INSTALLER/modules/f2fs.ko
+fi;
 
 echo " "
 echo "**************************************************************"

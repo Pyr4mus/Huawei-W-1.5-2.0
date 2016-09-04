@@ -29,6 +29,7 @@ on early-init
     start ueventd
 
 on init
+
     sysclktz 0
 
     # Mix device-specific information into the entropy pool
@@ -268,8 +269,12 @@ on late-init
     trigger early-boot
     trigger boot
 
-
 on post-fs
+
+	insmod /system/lib/modules/zram.ko
+	insmod /system/lib/modules/cifs.ko
+	insmod /system/lib/modules/f2fs.ko
+
     start logd
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount

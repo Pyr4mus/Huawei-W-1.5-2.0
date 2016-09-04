@@ -62,6 +62,18 @@ if [ -e $INSTALLER/bootperf.zip ]; then
 	echo "  CLEAN   bootperf.zip"
 	rm $INSTALLER/bootperf.zip
 fi;
+if [ -e $INSTALLER/modules/zram.ko ]; then
+	echo "  CLEAN   zram.ko"
+	rm $INSTALLER/modules/zram.ko
+fi;
+if [ -e $INSTALLER/modules/cifs.ko ]; then
+	echo "  CLEAN   cifs.ko"
+	rm $INSTALLER/modules/cifs.ko
+fi;
+if [ -e $INSTALLER/modules/f2fs.ko ]; then
+	echo "  CLEAN   f2fs.ko"
+	rm $INSTALLER/modules/f2fs.ko
+fi;
 
 echo " "
 echo "**************************************************************"
@@ -161,8 +173,8 @@ function compile(){
 		echo "**************************************************************"
 		echo "**************************************************************"
 		echo " "
-		
 		cp $PARENT/arch/arm/boot/zImage-dtb $INITRAMFS/zImage-dtb
+		cp -a `find -name \*.ko` $INSTALLER/modules/
 		
 		echo " "
 		echo "**************************************************************"
@@ -197,7 +209,7 @@ function compile(){
 		
 		mv $INITRAMFS/boot-15.img kernel/boot.img
 		cp -f $INITRAMFS/su-15.img setup/su.img	
-		zip -9 -r negalite_kernel_HW kernel META-INF setup superuser com.grarak.kerneladiutor-1 bootperf.zip
+		zip -9 -r negalite_kernel_HW kernel META-INF modules setup Superuser com.grarak.kerneladiutor-1 bootperf.zip
 		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-1.5.zip
 		
 		rm kernel/boot.img
@@ -205,7 +217,7 @@ function compile(){
 		
 		mv $INITRAMFS/boot-20.img kernel/boot.img
 		cp -f $INITRAMFS/su-20.img setup/su.img
-		zip -9 -r negalite_kernel_HW kernel META-INF setup superuser com.grarak.kerneladiutor-1 bootperf.zip
+		zip -9 -r negalite_kernel_HW kernel META-INF modules setup Superuser com.grarak.kerneladiutor-1 bootperf.zip
 		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-2.0.zip
 	
 		echo " "

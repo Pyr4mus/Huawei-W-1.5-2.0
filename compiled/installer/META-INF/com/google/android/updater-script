@@ -36,7 +36,14 @@ package_extract_dir("kernel", "/tmp");
 set_perm(0, 0, 0777, "/tmp/boot.img");
 run_program("/tmp/dd", "if=/tmp/boot.img", "of=/dev/block/mmcblk0p21");
 ui_print("Done");
-set_progress(0.250);
+set_progress(0.150);
+run_program("/sbin/sleep", "1");
+
+ui_print(" ");
+ui_print("Installing Kernel Modules");
+package_extract_dir("modules", "/system/lib/modules");
+ui_print("Done");
+set_progress(0.225);
 run_program("/sbin/sleep", "1");
 
 ui_print(" ");
@@ -56,7 +63,7 @@ run_program("/sbin/sleep", "1");
 ui_print(" ");
 ui_print("Installing Systemless Superuser");
 run_program("/tmp/su.sh");
-package_extract_dir("superuser", "/system");
+package_extract_dir("Superuser", "/system/app/Superuser");
 ui_print("Done");
 set_progress(0.600);
 run_program("/sbin/sleep", "1");

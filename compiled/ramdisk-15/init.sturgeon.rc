@@ -30,6 +30,7 @@ import init.huawei.logserver.rc
 import init.sturgeon.batterystats.rc
 
 on init
+
     mkdir /nvdata 0771 system system
     mkdir /firmware 0771 system system
     mkdir /oem 0771 system system
@@ -48,8 +49,15 @@ on fs
     wait /dev/block/platform/msm_sdcc.1/by-name/oem
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/oem /oem ro nosuid nodev context=u:object_r:oemfs:s0
 
+on post-fs
+
+	insmod /system/lib/modules/zram.ko
+	insmod /system/lib/modules/cifs.ko
+	insmod /system/lib/modules/f2fs.ko
+
 # msm specific files that need to be created on /data
 on post-fs-data
+	
     # Load ADSP firmware
     write /sys/kernel/boot_adsp/boot 1
 
