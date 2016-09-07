@@ -662,22 +662,20 @@ service daemonsu /sbin/launch_daemonsu.sh
 # SuperSU:PATCH:274
 # SuperSU:STOCK:863a68c32e68a732db364600cbf84d61e693eff3
 
-start tinythermald
-
 service post-init /system/etc/post-init.sh
     class late_start
     user root
     seclabel u:r:init:s0
     oneshot
-    
+
 service perf-boot /system/etc/perf-boot.sh
     class late_start
     user root
     seclabel u:r:init:s0
     oneshot
-    
-service sysinit /system/xbin/busybox run-parts /system/etc/init.d/
-    class late_start
-    user root
-    seclabel u:r:init:s0
-    oneshot    
+
+service sysinit /sbin/sysinit.sh
+	class late_start
+	user root
+	seclabel u:r:init:s0
+	oneshot

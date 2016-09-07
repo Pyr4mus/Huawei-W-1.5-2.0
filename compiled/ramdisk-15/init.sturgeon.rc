@@ -56,7 +56,7 @@ on post-fs
 
 # msm specific files that need to be created on /data
 on post-fs-data
-	
+
     # Load ADSP firmware
     write /sys/kernel/boot_adsp/boot 1
 
@@ -136,9 +136,6 @@ on boot
 on property:sys.boot_completed=1
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
     write /sys/module/drv2605/parameters/vibrator_volt 130
-
-on property:sys.cw_home_ready=1
-    start tinythermald
 
 on property:sys.thermal_cpu_freq_level=1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 787200
@@ -241,9 +238,20 @@ service sensorhd /system/bin/shd
     group root
     oneshot
 
+service post-init /system/etc/post-init.sh
+	class late_start
+	user root
+	group root
+	oneshot
+
+service perf-boot /system/etc/perf-boot.sh
+	class late_start
+	user root
+	group root
+	oneshot
+
 service sysinit /sbin/sysinit.sh
-    oneshot
-    class late_start
-    user root
-    group root
-    disabled
+	class late_start
+	user root
+	group root
+	oneshot
