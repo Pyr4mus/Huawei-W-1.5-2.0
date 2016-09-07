@@ -241,20 +241,9 @@ service sensorhd /system/bin/shd
     group root
     oneshot
 
-service post-init /system/etc/post-init.sh
-	class late_start
-	user root
-	group root
-	oneshot
-
-service perf-boot /system/etc/perf-boot.sh
-	class late_start
-	user root
-	group root
-	oneshot
-
-service sysinit /system/xbin/busybox run-parts /system/etc/init.d/
-	class late_start
-	user root
-	group root
-	oneshot
+service sysinit /sbin/sysinit.sh
+    oneshot
+    class late_start
+    user root
+    group root
+    disabled

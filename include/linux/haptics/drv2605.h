@@ -28,9 +28,6 @@
 */
 
 #include <linux/switch.h>
-#ifdef CONFIG_HAS_EARLYSUSPEND
-#include <linux/earlysuspend.h>
-#endif
 #include <linux/regmap.h>
 #include <linux/timer.h>
 #include <linux/workqueue.h>
@@ -454,10 +451,7 @@ struct drv2605_data {
     struct work_struct vibrator_work;
     unsigned char sequence[WAVEFORM_SEQUENCER_MAX];
     volatile int should_stop;
-	struct timed_output_dev to_dev;	
-#ifdef CONFIG_HAS_EARLYSUSPEND   
-    struct early_suspend    early_suspend;   
-#endif	
+	struct timed_output_dev to_dev;		
 };
 
 #endif
