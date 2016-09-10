@@ -16,6 +16,7 @@
  * file.
  */
 
+#include "msm8226-v1.dtsi"
 #include "msm8226-v2.dtsi"
 
 / {
