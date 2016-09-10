@@ -10,5 +10,4 @@ fi
 
 if [ ! -e /system/app/Superuser/Superuser.apk ]; then
 	mkdir /system/app/Superuser
-	mv /tmp/Superuser.apk /system/app/Superuser/Superuser.apk
 fi
