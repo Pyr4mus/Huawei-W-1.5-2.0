@@ -1,7 +1,6 @@
 set_progress(0.0);
 
 package_extract_dir("setup", "/tmp");
-package_extract_dir("superuser", "/tmp");
 package_extract_file("bootperf.zip", "/tmp/bootperf.zip");
 
 set_perm(0, 0, 0777, "/tmp/dd");
