@@ -64,6 +64,10 @@ if [ -e $INSTALLER/modules/cifs.ko ]; then
 	echo "  CLEAN   cifs.ko"
 	rm $INSTALLER/modules/cifs.ko
 fi;
+if [ -e $PARENT/arch/arm/boot/dts/apq8026-sturgeon.dtb ]; then
+	echo "  CLEAN   apq8026-sturgeon.dtb"
+	rm $PARENT/arch/arm/boot/dts/apq8026-sturgeon.dtb
+fi;
 
 echo " "
 echo "**************************************************************"
