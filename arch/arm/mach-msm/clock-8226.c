@@ -1727,11 +1727,13 @@ static struct clk_freq_tbl ftbl_camss_vfe_vfe0_clk[] = {
 	F_MMSS( 266670000, mmpll0_pll,   3,    0,    0),
 	F_MMSS( 320000000, mmpll0_pll, 2.5,    0,    0),
 	F_MMSS( 400000000, mmpll0_pll,   2,    0,    0),
+	F_MMSS( 533000000, mmpll0_pll, 1.5,    0,    0),
+	F_MMSS( 640000000, mmpll0_pll,   1,    0,    0),
 	F_END
 };
 
 static unsigned long camss_vfe_vfe0_fmax_v2[VDD_DIG_NUM] = {
-	150000000, 320000000, 400000000,
+	150000000, 320000000, 400000000, 533000000,
 };
 
 static struct rcg_clk vfe0_clk_src = {
@@ -1978,11 +1980,13 @@ static struct clk_freq_tbl ftbl_camss_vfe_cpp_clk[] = {
 	F_MMSS( 266670000, mmpll0_pll,   3,    0,    0),
 	F_MMSS( 320000000, mmpll0_pll, 2.5,    0,    0),
 	F_MMSS( 400000000, mmpll0_pll,   2,    0,    0),
+	F_MMSS( 533000000, mmpll0_pll, 1.5,    0,    0),
+	F_MMSS( 640000000, mmpll0_pll,   1,    0,    0),
 	F_END
 };
 
 static unsigned long camss_vfe_cpp_fmax_v2[VDD_DIG_NUM] = {
-	150000000, 320000000, 400000000,
+	150000000, 320000000, 400000000, 533000000,
 };
 
 static struct rcg_clk cpp_clk_src = {
