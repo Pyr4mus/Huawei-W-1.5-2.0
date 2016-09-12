@@ -3,7 +3,7 @@
 REVISION="$(git log --pretty=format:'%h' -n 1)"
 
 CURDATE=`date "+%m-%d-%Y"`
-VERSION="-Negalite-HW-$REVISION"
+VERSION="-Negalite-HW+-$REVISION"
 
 PARENT=`readlink -f .`
 INITRAMFS=$PARENT/compiled
@@ -127,7 +127,7 @@ echo "      Modding .config file "$VERSION $CURDATE
 echo "**************************************************************"
 echo "**************************************************************"
 
-sed -i 's,CONFIG_LOCALVERSION="negalite-HW",CONFIG_LOCALVERSION="'$VERSION'",' .config
+sed -i 's,CONFIG_LOCALVERSION="",CONFIG_LOCALVERSION="'$VERSION'",' .config
 
 echo "         ______                   _       _                   "
 echo "        |  ___ \                 | |     (_)_                 "
