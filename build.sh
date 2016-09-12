@@ -3,7 +3,7 @@
 REVISION="$(git log --pretty=format:'%h' -n 1)"
 
 CURDATE=`date "+%m-%d-%Y"`
-VERSION="-Negalite-HW+-$REVISION"
+VERSION="-Negalite-HW-$REVISION"
 
 PARENT=`readlink -f .`
 INITRAMFS=$PARENT/compiled
