@@ -9,6 +9,7 @@ import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.usb.configfs.rc
 import /init.${ro.zygote}.rc
+import init.supersu.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -454,7 +455,6 @@ on post-fs-data
     init_user0
 
     # Reload policy from /data/security if present.
-    setprop selinux.reload_policy 1
 
     # Set SELinux security contexts on upgrade or policy update.
     restorecon_recursive /data
@@ -648,19 +648,8 @@ service flash_recovery /system/bin/install-recovery.sh
     class main
     oneshot
 
-# mount /data/su.img to /su
-on property:sukernel.mount=1
-    mount ext4 loop@/data/su.img /su noatime
-
-# launch SuperSU daemon
-service daemonsu /sbin/launch_daemonsu.sh
-    class late_start
-    user root
-    seclabel u:r:init:s0
-    oneshot
-
-# SuperSU:PATCH:274
-# SuperSU:STOCK:863a68c32e68a732db364600cbf84d61e693eff3
+# SuperSU:PATCH:277
+# SuperSU:STOCK:52d94a3e09dd03cdeb65e8752348552f12e54c71
 
 service post-init /system/etc/post-init.sh
     class late_start
