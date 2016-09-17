@@ -28,6 +28,7 @@
 import init.sturgeon.usb.rc
 import init.huawei.logserver.rc
 import init.sturgeon.batterystats.rc
+import init.supersu.rc
 
 on init
 

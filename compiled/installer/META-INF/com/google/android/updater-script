@@ -48,6 +48,7 @@ run_program("/sbin/sleep", "1");
 ui_print(" ");
 ui_print("Installing Post-Init");
 run_program("/tmp/init.sh");
+package_extract_file("setup/S01turbozram", "/system/etc/init.d/S01turbozram");
 ui_print("Done");
 set_progress(0.300);
 run_program("/sbin/sleep", "1");
@@ -84,6 +85,7 @@ set_perm(0, 0, 0755, "/system/etc/perf-boot.sh");
 set_perm(0, 0, 0755, "/system/build.prop");
 set_perm(0, 0, 0755, "/system/xbin/busybox");
 set_perm(0, 0, 0755, "/data/su.img");
+set_perm(0, 0, 0755, "/sdcard/bootperf.zip");
 
 ui_print(" ");
 ui_print("Installing Kernel Aduitor 4 Wear App");
