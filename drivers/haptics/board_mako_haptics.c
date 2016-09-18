@@ -85,9 +85,9 @@ static struct drv2605_platform_data  drv2605_plat_data = {
     .BIDIRInput = BiDirectional,
     .actuator = {
         .device_type = ERM,
-        .g_effect_bank = LIBRARY_D,
-        .rated_vol = 0x7e,
-        .over_drive_vol = 0xa0,
+        .g_effect_bank = LIBRARY_E,
+        .rated_vol = 0x8d,
+        .over_drive_vol = 0xa9,
     },
     .a2h = {
         .a2h_min_input = AUDIO_HAPTICS_MIN_INPUT_VOLTAGE,
