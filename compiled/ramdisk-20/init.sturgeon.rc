@@ -29,6 +29,9 @@ import init.sturgeon.usb.rc
 import init.huawei.logserver.rc
 import init.sturgeon.batterystats.rc
 
+on early-init
+    mount debugfs debugfs /sys/kernel/debug
+
 on init
     mkdir /nvdata 0771 system system
     mkdir /firmware 0771 system system
@@ -131,7 +134,6 @@ on property:sys.boot_completed=1
     write /sys/module/drv2605/parameters/vibrator_volt 130
 
 on property:sys.cw_home_ready=1
-    start tinythermald
 
 on property:sys.thermal_cpu_freq_level=1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 787200
@@ -220,8 +222,8 @@ on property:persist.usb.chgdisabled=0
 service clockwork_proxy /system/bin/ClockworkProxy
     class main
 
-service bugreport /system/bin/dumpstate -d -p -B \
-        -o /data/data/com.android.shell/files/bugreports/bugreport
+service bugreport /system/bin/dumpstate -d -p -B -z \
+        -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
     class main
     disabled
     oneshot

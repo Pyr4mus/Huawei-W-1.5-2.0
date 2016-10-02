@@ -155,5 +155,6 @@ dream_ambient                                                           u:object
 activity_ambient                                                        u:object_r:system_app_service:s0
 ThermalObserver                                                         u:object_r:ThermalObserver_service:s0
 WearBluetoothService                                                    u:object_r:WearBluetoothService_service:s0
+WearWifiMediatorService                                                 u:object_r:WearWifiMediatorService_service:s0
 #line 1 "out/target/product/sturgeon/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
