@@ -185,7 +185,7 @@ function compile(){
 		echo " "
 		
 		cd $INITRAMFS
-		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F selinux=1 pm_levels.sleep_disabled=1 console=null androidboot.console=null'
+		CMD='androidboot.hardware=sturgeon user_debug=31 maxcpus=4 msm_rtb.filter=0x3F pm_levels.sleep_disabled=1 console=null androidboot.console=null buildvariant=user'
 
 		echo "  MKBOOT   ramdisk-15"
 		$MKBOOT/mkbootfs ramdisk-15 | gzip > ramdisk-15.gz
