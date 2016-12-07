@@ -23,8 +23,8 @@ bluetooth.force_pm_timer=2000
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Wed Aug 17 13:59:36 UTC 2016
-ro.bootimage.build.date.utc=1471442376
-ro.bootimage.build.fingerprint=Huawei/sturgeon/sturgeon:6.0.1/M6E69F/3153324:user/release-keys
+ro.bootimage.build.date=Tue Nov 8 21:19:29 UTC 2016
+ro.bootimage.build.date.utc=1478639969
+ro.bootimage.build.fingerprint=Huawei/sturgeon/sturgeon:6.0.1/M9E41V/3454171:user/release-keys
 persist.sys.usb.config=none
 
