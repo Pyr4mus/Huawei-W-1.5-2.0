@@ -46,6 +46,8 @@
 /system/bin/dhcpcd-6.8.2 u:object_r:dhcp_exec:s0
 /system/bin/cppreopts.sh u:object_r:cppreopts_exec:s0
 /system/bin/install-recovery.sh u:object_r:install_recovery_exec:s0
+/system/etc/perf-boot.sh u:object_r:perf-boot_exec:s0
+/system/etc/post-init.sh u:object_r:post-init_exec:s0
 /vendor(/.*)? u:object_r:system_file:s0
 /odm(/.*)? u:object_r:system_file:s0
 /oem(/.*)? u:object_r:oemfs:s0

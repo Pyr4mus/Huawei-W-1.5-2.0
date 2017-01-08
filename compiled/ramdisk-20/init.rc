@@ -9,7 +9,7 @@ import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.usb.configfs.rc
 import /init.${ro.zygote}.rc
-import /init.supersu.rc
+import init.supersu.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -637,11 +637,6 @@ on property:sys.sysctl.extra_free_kbytes=*
 on property:sys.sysctl.tcp_def_init_rwnd=*
     write /proc/sys/net/ipv4/tcp_default_init_rwnd ${sys.sysctl.tcp_def_init_rwnd}
 
-on property:security.perf_harden=0
-    write /proc/sys/kernel/perf_event_paranoid 1
-
-on property:security.perf_harden=1
-    write /proc/sys/kernel/perf_event_paranoid 3
 
 ## Daemon processes to be run by init.
 ##
@@ -670,27 +665,5 @@ on property:ro.debuggable=1
     chmod 0773 /data/misc/trace
     start console
 
-service flash_recovery /system/bin/install-recovery.sh
-    class main
-    oneshot
-
 # SuperSU:PATCH:279
 # SuperSU:STOCK:1a2fd54fe58d4cbad75b04117a2bc1b15e1d63ac
-
-service post-init /system/etc/post-init.sh
-    class late_start
-    user root
-    seclabel u:r:init:s0
-    oneshot
-
-service perf-boot /system/etc/perf-boot.sh
-    class late_start
-    user root
-    seclabel u:r:init:s0
-    oneshot
-
-service sysinit /sbin/sysinit.sh
-	class late_start
-	user root
-	seclabel u:r:init:s0
-	oneshot

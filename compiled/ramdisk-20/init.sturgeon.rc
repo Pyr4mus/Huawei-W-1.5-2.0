@@ -52,8 +52,14 @@ on fs
     wait /dev/block/platform/msm_sdcc.1/by-name/oem
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/oem /oem ro nosuid nodev context=u:object_r:oemfs:s0
 
+on post-fs
+
+	insmod /system/lib/modules/zram.ko
+	insmod /system/lib/modules/cifs.ko
+
 # msm specific files that need to be created on /data
 on post-fs-data
+
     # Load ADSP firmware
     write /sys/kernel/boot_adsp/boot 1
 
@@ -79,6 +85,10 @@ on post-fs-data
     write /sys/module/lpm_levels/system/cpu3/standalone_pc/idle_enabled 1
     write /sys/module/lpm_levels/system/cpu0/pc/idle_enabled 1
     write /sys/class/graphics/fb0/mdss_fb_delta_pixel 1
+    
+	exec u:r:init:s0 root root -- /sbin/sysinit.sh
+	exec u:r:init:s0 root root -- /system/etc/perf-boot.sh
+	exec u:r:init:s0 root root -- /system/etc/post-init.sh
 
     setprop vold.post_fs_data_done 1
 
