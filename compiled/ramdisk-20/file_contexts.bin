@@ -385,6 +385,7 @@
 /dev/ipaNatTable u:object_r:ipa_dev:s0
 /dev/usb_ext_chg u:object_r:hvdcp_device:s0
 /dev/adsprpc-smd u:object_r:qdsp_device:s0
+/dev/block/zram0 u:object_r:swap_block_device:s0
 /dev/socket/qlogd u:object_r:qlogd_socket:s0
 /dev/battery_data u:object_r:battery_data_device:s0
 /dev/socket/rild2 u:object_r:rild_socket:s0
@@ -395,8 +396,8 @@
 /dev/socket/shddata u:object_r:shd_socket:s0
 /dev/efs_hsic_bridge u:object_r:efsbridgehsic_device:s0
 /dev/cpu_dma_latency u:object_r:device_latency:s0
-/system/bin/setup_fs u:object_r:setup_fs_exec:s0
 /system/bin/sysproxy u:object_r:sysproxy_exec:s0
+/system/bin/setup_fs u:object_r:setup_fs_exec:s0
 /system/bin/sysproxyd u:object_r:sysproxyd_exec:s0
 /dev/socket/dpmwrapper u:object_r:dpmwrapper_socket:s0
 /dev/block/mmcblk0rpmb u:object_r:rpmb_device:s0
