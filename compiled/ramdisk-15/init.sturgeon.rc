@@ -28,8 +28,6 @@
 import init.sturgeon.usb.rc
 import init.huawei.logserver.rc
 import init.sturgeon.batterystats.rc
-import init.sturgeon.zram.rc
-import init.supersu.rc
 
 on init
 
@@ -50,11 +48,6 @@ on fs
 
     wait /dev/block/platform/msm_sdcc.1/by-name/oem
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/oem /oem ro nosuid nodev context=u:object_r:oemfs:s0
-
-on post-fs
-
-	insmod /system/lib/modules/zram.ko
-	insmod /system/lib/modules/cifs.ko
 
 # msm specific files that need to be created on /data
 on post-fs-data
@@ -239,21 +232,3 @@ service sensorhd /system/bin/shd
     user  root
     group root
     oneshot
-
-service post-init /system/etc/post-init.sh
-	class late_start
-	user root
-	group root
-	oneshot
-
-service perf-boot /system/etc/perf-boot.sh
-	class late_start
-	user root
-	group root
-	oneshot
-
-service sysinit /sbin/sysinit.sh
-	class late_start
-	user root
-	group root
-	oneshot

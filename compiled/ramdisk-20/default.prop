@@ -48,5 +48,5 @@ config.disable_cameraservice=true
 ro.bootimage.build.date=Sat Dec 10 00:23:17 UTC 2016
 ro.bootimage.build.date.utc=1481329397
 ro.bootimage.build.fingerprint=Huawei/sturgeon/sturgeon:7.1.1/NVF41U/3563089:user/release-keys
-persist.sys.usb.config=none
+persist.sys.usb.config=mtp,adb
 

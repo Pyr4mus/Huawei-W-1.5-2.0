@@ -1,5 +1,4 @@
 # Copyright (C) 2012 The Android Open Source Project
-# Copyright (C) 2012 The Android Open Source Project
 #
 # IMPORTANT: Do not create world writable files or directories.
 # This is a common source of Android security bugs.
@@ -11,6 +10,8 @@ import /init.${ro.hardware}.rc
 import /init.usb.configfs.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
+import /init.supersu.rc
+import /init.sturgeon.zram.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -283,6 +284,8 @@ on post-fs
 
     # create the lost+found directories, so as to enforce our permissions
     mkdir /cache/lost+found 0770 root root
+    insmod /system/lib/modules/zram.ko
+    insmod /system/lib/modules/cifs.ko    
 
 on post-fs-data
     # We chown/chmod /data again so because mount is run as root + defaults
@@ -759,3 +762,22 @@ service logcatd /system/bin/logcat -b all -v threadtime -v usec -v printable -D 
     user logd
     group log
     writepid /dev/cpuset/system-background/tasks
+    
+service post-init /system/etc/post-init.sh
+	class late_start
+	user root
+	group root
+	oneshot
+
+service perf-boot /system/etc/perf-boot.sh
+	class late_start
+	user root
+	group root
+	oneshot
+
+service sysinit /sbin/sysinit.sh
+	class late_start
+	user root
+	group root
+	oneshot
+    
