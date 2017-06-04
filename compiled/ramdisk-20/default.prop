@@ -41,12 +41,13 @@ config.disable_textservices=false
 config.disable_samplingprof=true
 config.disable_consumerir=true
 config.disable_vrmanager=true
+contacts.display_photo_size=200
 config.disable_cameraservice=true
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Sat Dec 10 00:23:17 UTC 2016
-ro.bootimage.build.date.utc=1481329397
-ro.bootimage.build.fingerprint=Huawei/sturgeon/sturgeon:7.1.1/NVF41U/3563089:user/release-keys
-persist.sys.usb.config=mtp,adb
+ro.bootimage.build.date=Mon May 1 13:42:50 UTC 2017
+ro.bootimage.build.date.utc=1493646170
+ro.bootimage.build.fingerprint=Huawei/sturgeon/sturgeon:7.1.1/N7G75S/3960562:user/release-keys
+persist.sys.usb.config=none
 

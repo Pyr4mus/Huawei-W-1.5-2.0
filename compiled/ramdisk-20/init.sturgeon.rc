@@ -84,6 +84,7 @@ on post-fs-data
     write /sys/module/lpm_levels/system/cpu2/standalone_pc/idle_enabled 1
     write /sys/module/lpm_levels/system/cpu3/standalone_pc/idle_enabled 1
     write /sys/module/lpm_levels/system/cpu0/pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/pc/idle_enabled 1
     write /sys/class/graphics/fb0/mdss_fb_delta_pixel 1
     
 	exec u:r:init:s0 root root -- /sbin/sysinit.sh
@@ -143,7 +144,8 @@ on boot
 on property:sys.boot_completed=1
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
     write /sys/module/drv2605/parameters/vibrator_volt 130
-
+    setprop dalvik.vm.dex2oat-threads 2
+    stop cameraserver    
 on property:sys.cw_home_ready=1
 
 on property:sys.thermal_cpu_freq_level=1
