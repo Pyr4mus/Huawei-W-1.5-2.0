@@ -661,5 +661,5 @@ on property:ro.debuggable=1
     chmod 0773 /data/misc/trace
     start console
 
-# SuperSU:PATCH:279
-# SuperSU:STOCK:1a2fd54fe58d4cbad75b04117a2bc1b15e1d63ac
+# SuperSU:PATCH:282
+# SuperSU:STOCK:7db13d8a0ad8c605611c13916aecb64e71c84702

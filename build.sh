@@ -209,7 +209,7 @@ function compile(){
 		
 		mv $INITRAMFS/boot-15.img kernel/boot.img
 		cp -f $INITRAMFS/su-15.img setup/su.img	
-		zip -9 -r negalite_kernel_HW kernel META-INF modules setup Superuser com.grarak.kerneladiutor-1 bootperf.zip
+		zip -9 -r negalite_kernel_HW kernel META-INF modules setup com.grarak.kerneladiutor-1 bootperf.zip
 		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-1.5.zip
 		
 		rm kernel/boot.img
@@ -217,7 +217,7 @@ function compile(){
 		
 		mv $INITRAMFS/boot-20.img kernel/boot.img
 		cp -f $INITRAMFS/su-20.img setup/su.img
-		zip -9 -r negalite_kernel_HW kernel META-INF modules setup Superuser com.grarak.kerneladiutor-1 bootperf.zip
+		zip -9 -r negalite_kernel_HW kernel META-INF modules setup com.grarak.kerneladiutor-1 bootperf.zip
 		mv negalite_kernel_HW.zip $INITRAMFS/negalite_kernel_HW_$REVISION-2.0.zip
 	
 		echo " "

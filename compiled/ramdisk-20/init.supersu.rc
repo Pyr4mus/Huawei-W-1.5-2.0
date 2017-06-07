@@ -1,9 +1,6 @@
 # earliest possible SuperSU daemon launch, with fallback to service
 on post-fs-data
-    # HTC
-    exec /sbin/launch_daemonsu.sh post-fs-data
-    # Proper devices
-    exec u:r:init:s0 root root -- /sbin/launch_daemonsu.sh post-fs-data
+    exec u:r:supersu:s0 root root -- /sbin/launch_daemonsu.sh post-fs-data
 
 # mount /data/su.img to /su
 on property:sukernel.mount=1
@@ -13,5 +10,5 @@ on property:sukernel.mount=1
 service daemonsu /sbin/launch_daemonsu.sh service
     class late_start
     user root
-    seclabel u:r:init:s0
+    seclabel u:r:supersu:s0
     oneshot
