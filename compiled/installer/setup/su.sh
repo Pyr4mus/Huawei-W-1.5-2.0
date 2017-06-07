@@ -7,7 +7,3 @@ fi
 if [ -e /system/app/superuser/Superuser.apk ]; then
 	rm -rf /system/app/superuser
 fi
-
-if [ ! -e /system/app/Superuser/Superuser.apk ]; then
-	mkdir /system/app/Superuser
-fi
